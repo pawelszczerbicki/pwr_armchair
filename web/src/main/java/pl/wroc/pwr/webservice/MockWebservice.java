@@ -43,7 +43,7 @@ public class MockWebservice {
     @Consumes(MediaType.APPLICATION_JSON)
     public JsonResponse move(List<MotorDto> motors) {
         if (motors.size() >= 1 && motors.get(0).getValue() == 0)
-            return FailResponse.create();
+            return FailResponse.create("Value can not be applied");
         return SuccessResponse.create();
     }
 
