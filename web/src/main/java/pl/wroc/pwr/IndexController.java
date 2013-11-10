@@ -11,12 +11,12 @@ import static org.apache.log4j.Logger.getLogger;
 @Controller
 @RequestMapping("/")
 public class IndexController {
+
     private final Logger logger = getLogger(getClass());
 
-	@RequestMapping(method = RequestMethod.GET)
-	public String printWelcome(ModelMap model) {
-	    logger.info("Index controller");
-			model.addAttribute("message", "Hello world!");
-		return "hello";
-	}
+    @RequestMapping(method = RequestMethod.GET)
+    public String printWelcome(ModelMap model) {
+        model.addAttribute("message", "Hello world!");
+        return "hello";
+    }
 }
