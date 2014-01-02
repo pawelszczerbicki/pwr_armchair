@@ -23,8 +23,6 @@ public class Logger {
     }
 
     public static Logger getInstance(Class clazz) {
-        if (loggers.containsKey(clazz))
-            return loggers.get(clazz);
         loggers.put(clazz, new Logger(clazz));
         return loggers.get(clazz);
     }
