@@ -1,7 +1,7 @@
 package pl.wroc.pwr.armchair.driver;
 
 import Automation.BDaq.*;
-import pl.wroc.pwr.armchair.log.Logger;
+import pl.wroc.pwr.armchair.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +81,7 @@ public class Driver {
 
     public void printDirections() {
         logger.info("Directions:");
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < portAmount; i++)
             logger.info(String.format("[%s] %s", i, instantDiCtrl.getPortDirection()[i].getDirection()));
     }
 

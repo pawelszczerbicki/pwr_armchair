@@ -1,8 +1,8 @@
-package pl.wroc.pwr.armchair.log;
+package pl.wroc.pwr.armchair.logger;
 
 /**
  * Created by Pawel on 02.01.14.
  */
-public enum LogType {
+public enum Type {
     INFO, ERROR, WARNING;
 }
