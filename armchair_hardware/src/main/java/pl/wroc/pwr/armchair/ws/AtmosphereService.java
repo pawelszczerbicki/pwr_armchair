@@ -12,9 +12,9 @@ import java.io.IOException;
 public class AtmosphereService {
 
     static Logger logger = Logger.getInstance(AtmosphereService.class);
-    private static String LOCAL_ADDRESS = "http://localhost:8080/chat/5249cbba2fd4972c7c078edf";
 
-    private static String REMOTE_ADDRESS = "http://pawelszczerbicki.pl:8080/smart-home/chat/5249cbba2fd4972c7c078edf";
+    //TODO move to properties
+    private static String REMOTE_ADDRESS = "http://pawelszczerbicki.pl:8080/armchair/driver";
 
     private Socket socket;
 
