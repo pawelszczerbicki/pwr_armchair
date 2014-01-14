@@ -1,0 +1,3 @@
+port;bit;direction;description
+PF;0;0;FORWARD;pochylenie w przód
+PF;0;1;BACKWARD;pochylenie w ty³

@@ -36,6 +36,7 @@ public class Driver {
     public void selectDevice(Integer d) {
         try {
             instantDiCtrl.setSelectedDevice(new DeviceInformation(installedDevices.get(d).toString()));
+            instantDoCtrl.setSelectedDevice(new DeviceInformation(installedDevices.get(d).toString()));
             portAmount = instantDiCtrl.getPortCount();
         } catch (Exception ex) {
             logger.error("Unable to select device!");

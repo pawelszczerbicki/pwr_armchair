@@ -12,7 +12,7 @@ import static pl.wroc.pwr.armchair.logger.Type.WARNING;
  */
 public class Logger {
 
-    private static Map<Class, Logger> loggers = new ConcurrentHashMap<>();
+    private static Map<Class, Logger> loggers = new ConcurrentHashMap<Class, Logger>();
     private Class clazz;
 
     private Logger() {
