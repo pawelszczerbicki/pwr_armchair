@@ -14,6 +14,7 @@ public class AtmosphereService {
     static Logger logger = Logger.getInstance(AtmosphereService.class);
 
     //TODO move to properties
+    //TODO could loop logger because of bad websocket, Create additional method without sending log
     private static String REMOTE_ADDRESS = "http://pawelszczerbicki.pl:8080/armchair/driver";
 
     private Socket socket;
