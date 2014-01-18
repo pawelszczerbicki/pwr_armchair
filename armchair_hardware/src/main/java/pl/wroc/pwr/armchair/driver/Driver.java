@@ -121,7 +121,6 @@ public class Driver {
 			timerPulseCtrl.setFrequency(1000);
 			timerPulseCtrl.setEnabled(true);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -131,7 +130,6 @@ public class Driver {
 			counterCtrl.setChannel(0);
 			counterCtrl.setEnabled(true);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

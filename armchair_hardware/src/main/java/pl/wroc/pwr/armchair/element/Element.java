@@ -17,7 +17,7 @@ public class Element {
     private String description;
     private Integer port;
     private Map<Direction, Integer> bits = new HashMap<>();
-    private Integer currentState;
+    private Integer currentState = 0;
     private Integer maxState;
     private Integer counter;
 

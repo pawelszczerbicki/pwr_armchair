@@ -17,7 +17,7 @@ import static pl.wroc.pwr.message.MessageType.HEARTBEAT;
 public class Heartbeat {
     private final Logger logger  = getLogger(getClass());
 
-    @Scheduled(cron = "0 0/5 * * * *")
+    @Scheduled(cron = "0 0/1 * * * *")
     public void heartBeat(){
         Broadcaster b = BroadcasterFactory.getDefault().lookup("/*");
         logger.info(b.getID());

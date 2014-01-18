@@ -16,6 +16,12 @@ public class Message {
         this.data = data;
     }
 
+    public Message(MessageType type, String code, String data) {
+        this.type = type;
+        this.code = code;
+        this.data = data;
+    }
+
     public Message() {
     }
 
