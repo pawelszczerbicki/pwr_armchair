@@ -1,6 +1,11 @@
 package pl.wroc.pwr.armchair.element;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+
 import java.util.Map;
+
+import static pl.wroc.pwr.armchair.element.Direction.BACKWARD;
+import static pl.wroc.pwr.armchair.element.Direction.FORWARD;
 
 /**
  * Created by Pawel on 14.01.14.
@@ -15,12 +20,13 @@ public class Element {
     private Integer maxState;
     private Integer counter;
 
-    public Element(String code, Integer port, Integer maxState, Integer counter, Integer backwardBit, Integer forwardBit) {
+    public Element(String code, Integer port,Integer forwardBit, Integer backwardBit, Integer counter, Integer maxState ) {
         this.code = code;
         this.port = port;
         this.maxState = maxState;
         this.counter = counter;
-//        bits.put(BACKWARD);
+        bits.put(BACKWARD, backwardBit);
+        bits.put(FORWARD, forwardBit);
     }
 
     public String getCode() {
@@ -81,5 +87,10 @@ public class Element {
 
     public Integer getBit(Direction d) {
         return bits.get(d);
+    }
+
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
     }
 }

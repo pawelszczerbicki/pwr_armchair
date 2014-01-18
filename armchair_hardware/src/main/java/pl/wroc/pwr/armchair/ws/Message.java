@@ -1,6 +1,6 @@
 package pl.wroc.pwr.armchair.ws;
 
-import pl.wroc.pwr.armchair.element.Direction;
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 /**
  * Created by Pawel on 14.01.14.
@@ -9,7 +9,6 @@ public class Message {
 
     private MessageType type;
     private String  code;
-    private Direction direction;
     private String data;
 
     public Message(MessageType type, String data) {
@@ -36,14 +35,6 @@ public class Message {
         this.code = code;
     }
 
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
-
     public String getData() {
         return data;
     }
@@ -54,11 +45,6 @@ public class Message {
 
     @Override
     public String toString() {
-        return "Message{" +
-                "type=" + type +
-                ", code='" + code + '\'' +
-                ", direction=" + direction +
-                ", data='" + data + '\'' +
-                '}';
+        return ReflectionToStringBuilder.toString(this);
     }
 }

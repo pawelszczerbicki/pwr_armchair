@@ -2,8 +2,8 @@
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration
 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 <tiles-definitions>
-    <definition extends="index" name="knowledge">
-        <put-attribute name="body" value="/WEB-INF/views/index.jsp" />
+    <definition extends="index" name="config">
+        <put-attribute name="body" value="/WEB-INF/views/config.jsp" />
     </definition>
 
 

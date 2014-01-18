@@ -21,7 +21,6 @@ public class Message {
 
     private MessageType type;
     private String code;
-    private Direction direction;
     private String data;
 
     public Message(MessageType type) {

@@ -1,5 +1,5 @@
 code;port;forward_bit;backward_bit;counter;max_pos
-PF;0;1;0;0;92
+PF;0;0;1;0;92
 PO;0;2;3;0;1562
 SP;0;4;5;0;676
 UG;0;6;7;0;400

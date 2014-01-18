@@ -13,7 +13,12 @@ public class IndexController {
     private final Logger logger = getLogger(getClass());
 
     @RequestMapping
-    public String printWelcome() {
+    public String index() {
         return "index";
+    }
+
+    @RequestMapping
+    public String config() {
+        return "config";
     }
 }
