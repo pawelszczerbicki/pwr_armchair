@@ -1,3 +1,10 @@
-port;bit;direction;description
-PF;0;0;FORWARD;pochylenie w przód
-PF;0;1;BACKWARD;pochylenie w ty³
+code;port;forward_bit;backward_bit;counter;max_pos
+PF;0;1;0;0;92
+PO;0;2;3;0;1562
+SP;0;4;5;0;676
+UG;0;6;7;0;400
+ZG;1;0;1;0;181
+WF;1;2;3;1;282
+GG;1;4;5;1;228
+GW;1;6;7;1;156
+PZ;2;0;1;1;139
