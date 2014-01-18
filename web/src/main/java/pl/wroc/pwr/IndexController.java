@@ -17,7 +17,7 @@ public class IndexController {
         return "index";
     }
 
-    @RequestMapping
+    @RequestMapping("config")
     public String config() {
         return "config";
     }
