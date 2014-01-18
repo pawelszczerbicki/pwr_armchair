@@ -342,7 +342,34 @@ jQuery(function($){
         var signToRemove = $(this).find('i').hasClass('glyphicon-plus') ? 'glyphicon-plus' : 'glyphicon-minus';
         $(this).find('i').removeClass(signToRemove).addClass(sign);
     });
+
+
 });
+
+
+// websocket stuff
+var loc = window.location, new_uri;
+if (loc.protocol === "https:") {
+    new_uri = "wss:";
+} else {
+    new_uri = "ws:";
+}
+new_uri += "//" + loc.host;
+new_uri += loc.pathname + "rest/message/device";
+
+var socket = new WebSocket(new_uri);
+
+socket.onopen = function() {
+    alert("Connected");
+}
+
+socket.onmessage = function(msg){
+    console.log(msg);
+}
+
+socket.onclose = function(){
+    alert("Connection terminated");
+}
 
 
 jQuery.fn.toggleVisibility = function() {

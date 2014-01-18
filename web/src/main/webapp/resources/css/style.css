@@ -2,7 +2,7 @@ body {
   /*background: url('../img/dark_leather.png') center repeat;*/
 }
 
-.hide {
+.hidden-slider {
     visibility:hidden;
 }
 
@@ -12,6 +12,10 @@ body {
 
 canvas#canvas-seat-control {
     position: absolute;
+    top: 50px;
+}
+.sidebar-content {
+    margin-top: 50px;
 }
 .canvas-container {
     width: 100%;
