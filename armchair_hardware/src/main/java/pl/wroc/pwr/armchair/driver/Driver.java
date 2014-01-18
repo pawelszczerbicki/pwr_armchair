@@ -95,4 +95,9 @@ public class Driver {
         for (DeviceTreeNode d : installedDevices)
             logger.info("[" + d.DeviceNumber + "] " + d);
     }
+    
+    public void sendAsByte(Integer b, Integer p) {    	
+		int value = 0 | (1 << b);
+		writeData((byte)value, p);
+	}
 }
