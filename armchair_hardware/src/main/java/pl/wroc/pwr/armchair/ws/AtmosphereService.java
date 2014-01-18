@@ -16,20 +16,21 @@ import java.io.IOException;
 public class AtmosphereService {
     private static Logger logger = Logger.getLogger(AtmosphereService.class);
     private String LOCAL_ADDRESS = "http://localhost:8080/rest/message/device";
-    private MessageService messageService = new MessageService();
+    private MessageService messageService;
     private Socket socket;
+    private RequestBuilder request;
+    private static AtmosphereService instance = new AtmosphereService();
+    public static AtmosphereService getInstance(){
+        return instance;
+    }
 
-    public AtmosphereService() {
+    private AtmosphereService() {
         final Gson gson = new Gson();
         Client client = ClientFactory.getDefault().newClient();
-        RequestBuilder request = getTransport(gson, client);
+         request = getTransport(gson, client);
         socket = client.create();
         logger.info("Socket created with state: " + socket.status());
-        try {
-            overrideMethodsAndOpenSocket(request);
-        } catch (IOException e) {
-            logger.error("Could not initialize socket.", e);
-        }
+        messageService = new MessageService();
     }
 
     public void send(Message m) {
@@ -41,11 +42,11 @@ public class AtmosphereService {
         }
     }
 
-    private void overrideMethodsAndOpenSocket(RequestBuilder request) throws IOException {
+    public void openSocket() throws IOException {
         socket.on(new Function<Message>() {
             @Override
             public void on(Message m) {
-                logger.info("Message: " + m);
+                logger.info("Message type: " + m.getType());
                 messageService.service(m);
             }
         }).on(new Function<IOException>() {
