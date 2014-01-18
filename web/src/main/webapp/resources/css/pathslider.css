@@ -7,12 +7,12 @@
 #slider-middle-v,
 #slider-bottom-v-head,
 #slider-bottom-v-tail,
-#slider-bottom-h { 
+#slider-bottom-h {
 	width: 400px;
 	height: 200px;
 }
 
-#slider-bottom .pathslider-grip,
+/*#slider-bottom .pathslider-grip,
 #slider-top .pathslider-grip {
     background: #e33a3a;
 }
@@ -25,7 +25,7 @@
 #slider-bottom-v-tail .pathslider-grip,
 #slider-bottom-h .pathslider-grip {
     background: #5aef3f;
-}
+}*/
 
 /* Basic solid color slider grip */
 .pathslider-grip {
