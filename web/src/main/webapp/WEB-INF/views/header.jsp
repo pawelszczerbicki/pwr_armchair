@@ -8,4 +8,5 @@
 
 <title>Car purchase assistance</title>
 
-<link href="<c:url value='/resources/css/bootstrap.css'/>" rel="stylesheet">
+<link href="<c:url value='/resources/css/pathslider.css'/>" rel="stylesheet">
+<link href="<c:url value='/resources/css/style.css'/>" rel="stylesheet">
