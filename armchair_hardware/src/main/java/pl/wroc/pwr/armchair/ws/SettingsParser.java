@@ -1,7 +1,9 @@
 package pl.wroc.pwr.armchair.ws;
 
+import org.apache.commons.lang.ArrayUtils;
 import pl.wroc.pwr.armchair.element.Element;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,6 +12,11 @@ import java.util.List;
 public class SettingsParser {
 
     public List<Element> getElements(String csv){
-        return null;
+        List<Element> elements = new ArrayList<>();
+        String [] lines = csv.split("\n");
+        ArrayUtils.remove(lines, 0);
+        for(String line: lines){
+           elements.
+        }
     }
 }

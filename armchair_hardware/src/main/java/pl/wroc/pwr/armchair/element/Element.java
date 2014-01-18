@@ -11,7 +11,7 @@ public class Element {
     private String description;
     private Integer port;
     private Map<Direction, Integer> bits;
-    private Integer state;
+    private Integer currentState;
     private Integer maxState;
     private Integer counter;
 
@@ -47,12 +47,12 @@ public class Element {
         this.bits = bits;
     }
 
-    public Integer getState() {
-        return state;
+    public Integer getCurrentState() {
+        return currentState;
     }
 
-    public void setState(Integer state) {
-        this.state = state;
+    public void setCurrentState(Integer currentState) {
+        this.currentState = currentState;
     }
 
     public Integer getMaxState() {
