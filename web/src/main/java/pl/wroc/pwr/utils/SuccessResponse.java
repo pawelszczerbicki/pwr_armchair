@@ -16,10 +16,10 @@ public class SuccessResponse<T> extends JsonResponse<T>{
     }
 
     public static <T> SuccessResponse<T> create (T data){
-        return new SuccessResponse<>(data);
+        return new SuccessResponse<T>(data);
     }
 
     public static <T> SuccessResponse<T> create (){
-        return new SuccessResponse<>(null);
+        return new SuccessResponse<T>(null);
     }
 }

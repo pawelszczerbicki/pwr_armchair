@@ -1,7 +1,6 @@
 package pl.wroc.pwr.webservice;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.stereotype.Component;
 import pl.wroc.pwr.motor.Motor;
 import pl.wroc.pwr.motor.MotorDto;
 import pl.wroc.pwr.motor.MotorSettings;
@@ -20,11 +19,10 @@ import java.util.*;
  * Time: 22:39
  * To change this template use File | Settings | File Templates.
  */
-@Component
 @Path("/motors")
 public class MockWebservice {
 
-    private static Map<String, Motor> motors = new HashMap<>();
+    private static Map<String, Motor> motors = new HashMap<String, Motor>();
 
     static {
         motors.put("1", getRandomMotor("1"));
@@ -79,7 +77,7 @@ public class MockWebservice {
         return new Motor(id, RandomStringUtils.randomAlphanumeric(5), r.nextDouble(), new MotorSettings(r.nextInt(), r.nextInt(), r.nextInt()));
     }
     private List<MotorDto> toMotorDto(Collection<Motor> ms) {
-        List<MotorDto> md = new ArrayList<>();
+        List<MotorDto> md = new ArrayList<MotorDto>();
         for (Motor m : ms) {
             md.add(new MotorDto(m.getId(), m.getValue()));
         }

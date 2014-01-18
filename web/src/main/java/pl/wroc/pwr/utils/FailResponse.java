@@ -15,11 +15,11 @@ public class FailResponse<T> extends JsonResponse<T>{
     }
 
     public static <T> FailResponse<T> create (T data){
-        return new FailResponse<>(data);
+        return new FailResponse<T>(data);
     }
 
     public static <T> FailResponse<T> create (){
-        return new FailResponse<>(null);
+        return new FailResponse<T>(null);
     }
 
 }

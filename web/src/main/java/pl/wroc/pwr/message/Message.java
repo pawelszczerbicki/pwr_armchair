@@ -2,6 +2,7 @@ package pl.wroc.pwr.message;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -14,10 +15,19 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @Getter
 @Setter
+@ToString
 @XmlRootElement
 public class Message {
 
-    private String id;
+    private MessageType type;
+    private String  code;
+    private Direction direction;
+    private String data;
 
-    private String content;
+    public Message(MessageType heartbeat) {
+
+    }
+
+    public Message() {
+    }
 }

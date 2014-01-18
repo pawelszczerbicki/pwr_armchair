@@ -12,6 +12,14 @@ public class Message {
     private Direction direction;
     private String data;
 
+    public Message(MessageType type, String data) {
+        this.type = type;
+        this.data = data;
+    }
+
+    public Message() {
+    }
+
     public MessageType getType() {
         return type;
     }

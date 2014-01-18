@@ -1,15 +1,30 @@
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:context="http://www.springframework.org/schema/context"
+             xmlns:task="http://www.springframework.org/schema/task"
+             xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+    		    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	    	    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                http://www.springframework.org/schema/task
+   http://www.springframework.org/schema/task/spring-task.xsd">
+    <annotation-driven />
+    <context:annotation-config/>
+    <resources location="/resources/" mapping="/resources/**"/>
+    <default-servlet-handler/>
+    <context:component-scan base-package="pl.wroc.pwr" />
 
-    <context:component-scan base-package="pl.wroc.pwr"/>
-
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/pages/"/>
-        <property name="suffix" value=".jsp"/>
-    </bean>
-
-</beans>
+    <beans:bean id="tilesViewResolver" class="org.springframework.js.ajax.AjaxUrlBasedViewResolver">
+        <beans:property name="viewClass" value="org.springframework.webflow.mvc.view.FlowAjaxTilesView"/>
+    </beans:bean>
+    <beans:bean class="org.springframework.web.servlet.view.tiles2.TilesConfigurer"
+                id="tilesConfigurer">
+        <beans:property name="definitions">
+            <beans:list>
+                <beans:value>/WEB-INF/layout/layouts.xml</beans:value>
+                <beans:value>/WEB-INF/views/views.xml</beans:value>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+    <task:annotation-driven />
+</beans:beans>
