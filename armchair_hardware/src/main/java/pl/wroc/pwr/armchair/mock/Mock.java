@@ -8,13 +8,25 @@ public class Mock {
 
 	public void start() {
 		driver.enableTimerPulseCtrl();
-        driver.enableFreqMeterCtrl();
+//        driver.enableCounter();
 	     Thread t =  new Thread() {
 	    	 	int i = 0;
 	        	public void run() {
+	        		double old = 0d;
 	        		while (true) {
 	        			i++;	        			
-	        			System.out.println("" + driver.getFreqMeterCtrlValue());
+	        			double freqMeterCtrlValue = driver.getCounterValue();
+	        		
+						System.out.println("" + freqMeterCtrlValue);
+	        			if (freqMeterCtrlValue > old) {
+	        				System.out.println("true");
+	        				
+	        			} else {
+	        				System.out.println("false");
+	        			}
+	        			
+	        			old = freqMeterCtrlValue;
+	        			
 	        			try {
 							Thread.sleep(100);
 						} catch (Exception e) {

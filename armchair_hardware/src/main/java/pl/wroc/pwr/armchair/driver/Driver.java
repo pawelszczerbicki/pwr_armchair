@@ -12,7 +12,7 @@ import static pl.wroc.pwr.armchair.driver.DriverUtils.hasError;
  * Created by Pawel on 02.01.14.
  */
 public class Driver {
-
+	
 	private static final Driver d = new Driver();
 	private Integer portAmount = 0;
 	private Logger logger = Logger.getInstance(getClass());
@@ -20,7 +20,6 @@ public class Driver {
 	private InstantDoCtrl instantDoCtrl = new InstantDoCtrl();
 	private TimerPulseCtrl timerPulseCtrl = new TimerPulseCtrl();
 	private EventCounterCtrl counterCtrl = new EventCounterCtrl();
-	private FreqMeterCtrl freqMeterCtrl = new FreqMeterCtrl();
 	private ArrayList<DeviceTreeNode> installedDevices;
 
 	private Driver() {
@@ -43,8 +42,9 @@ public class Driver {
 			instantDoCtrl.setSelectedDevice(deviceInformation);
 			timerPulseCtrl.setSelectedDevice(deviceInformation);
 			counterCtrl.setSelectedDevice(deviceInformation);
-			freqMeterCtrl.setSelectedDevice(deviceInformation);
 			portAmount = instantDiCtrl.getPortCount();
+			
+			enableCounter();
 		} catch (Exception ex) {
 			logger.error("Unable to select device!");
 			ex.printStackTrace();
@@ -105,15 +105,20 @@ public class Driver {
 			logger.info("[" + d.DeviceNumber + "] " + d);
 	}
 
-	public void sendAsByte(Integer b, Integer p) {
-		int value = 0 | (1 << b);
-		writeData((byte) value, p);
+	public void sendOneOnSpecificPos(Integer port, Integer bit) {
+		int value = 0 | (1 << bit);
+		System.out.println("value " + value);
+		writeData((byte) value, port);
+	}
+	
+	public void setZero(Integer port) {
+		writeData((byte)0, port);
 	}
 
 	public void enableTimerPulseCtrl() {
 		try {
 			timerPulseCtrl.setChannel(1);
-			timerPulseCtrl.setFrequency(500);
+			timerPulseCtrl.setFrequency(1000);
 			timerPulseCtrl.setEnabled(true);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -121,17 +126,17 @@ public class Driver {
 		}
 	}
 
-	public void enableFreqMeterCtrl() {
+	public void enableCounter() {
 		try {
-			freqMeterCtrl.setChannel(0);
-			freqMeterCtrl.setEnabled(true);
+			counterCtrl.setChannel(0);
+			counterCtrl.setEnabled(true);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	public double getFreqMeterCtrlValue() {
-		return freqMeterCtrl.getValue();
+	public int getCounterValue() {
+		return counterCtrl.getValue();
 	}
 }
