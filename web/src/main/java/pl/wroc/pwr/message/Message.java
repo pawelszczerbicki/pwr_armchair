@@ -20,12 +20,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Message {
 
     private MessageType type;
-    private String  code;
+    private String code;
     private Direction direction;
     private String data;
 
-    public Message(MessageType heartbeat) {
-
+    public Message(MessageType type) {
+        this.type = type;
     }
 
     public Message() {

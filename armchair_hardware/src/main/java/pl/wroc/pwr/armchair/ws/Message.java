@@ -51,4 +51,14 @@ public class Message {
     public void setData(String data) {
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "type=" + type +
+                ", code='" + code + '\'' +
+                ", direction=" + direction +
+                ", data='" + data + '\'' +
+                '}';
+    }
 }

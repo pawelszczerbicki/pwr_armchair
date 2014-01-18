@@ -1,22 +1,23 @@
 package pl.wroc.pwr.armchair.ws;
 
-import pl.wroc.pwr.armchair.driver.Driver;
+import pl.wroc.pwr.armchair.armchair.ArmchairController;
 
-import static pl.wroc.pwr.armchair.ws.MessageType.*;
+import static pl.wroc.pwr.armchair.ws.MessageType.ACTION;
+import static pl.wroc.pwr.armchair.ws.MessageType.CONFIG;
 
 /**
  * Created by Pawel on 14.01.14.
  */
 public class MessageService {
 
-    private Driver driver = Driver.getInstance();
-
+    private ArmchairController controller = ArmchairController.getInstance();
+    private SettingsParser parser = new SettingsParser();
     public void service(Message m) {
         MessageType type = m.getType();
         if (type == ACTION) {
-
+            controller.move();
         } else if (type == CONFIG) {
-
+            controller.setConfiguration(parser.getElements(m.getData()));
         }
     }
 }
