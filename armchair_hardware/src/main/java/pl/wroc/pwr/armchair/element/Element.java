@@ -15,6 +15,14 @@ public class Element {
     private Integer maxState;
     private Integer counter;
 
+    public Element(String code, Integer port, Integer maxState, Integer counter, Integer backwardBit, Integer forwardBit) {
+        this.code = code;
+        this.port = port;
+        this.maxState = maxState;
+        this.counter = counter;
+//        bits.put(BACKWARD);
+    }
+
     public String getCode() {
         return code;
     }
@@ -69,5 +77,9 @@ public class Element {
 
     public void setCounter(Integer counter) {
         this.counter = counter;
+    }
+
+    public Integer getBit(Direction d) {
+        return bits.get(d);
     }
 }

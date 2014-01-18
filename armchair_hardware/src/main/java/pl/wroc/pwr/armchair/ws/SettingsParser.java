@@ -16,7 +16,7 @@ public class SettingsParser {
         String [] lines = csv.split("\n");
         ArrayUtils.remove(lines, 0);
         for(String line: lines){
-           elements.
+           elements.add(new Element());
         }
     }
 }
