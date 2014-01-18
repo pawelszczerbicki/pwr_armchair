@@ -7,7 +7,7 @@ import java.util.Map;
  */
 public class Element {
 
-    private String sigh;
+    private String code;
     private String description;
     private Integer port;
     private Map<Direction, Integer> bits;
