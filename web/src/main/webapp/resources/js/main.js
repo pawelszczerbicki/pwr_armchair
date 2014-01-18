@@ -348,34 +348,132 @@ jQuery(function($){
 
 
 // websocket stuff
-var loc = window.location, new_uri;
-if (loc.protocol === "https:") {
-    new_uri = "wss:";
-} else {
-    new_uri = "ws:";
-}
-new_uri += "//" + loc.host;
-new_uri += loc.pathname + "rest/message/device";
-
-var socket = new WebSocket(new_uri);
-
-socket.onopen = function() {
-    alert("Connected");
-}
-
-socket.onmessage = function(msg){
-    console.log(msg);
-}
-
-socket.onclose = function(){
-    alert("Connection terminated");
-}
 
 
-jQuery.fn.toggleVisibility = function() {
-    if ($(this).css('visibility') == 'hidden'){
-        $(this).css('visibility', 'visible');
-    } else {
-        $(this).css('visibility', 'hidden');
+var subSocket;
+$(function () {
+    var localhost_url = 'http://localhost:8080/rest/message/device';
+    var content = $('#content');
+    var input = $('#input');
+    var status = $('#status');
+    var statusLed = $('#connection-status-led');
+    var logged = false;
+    var socket = $.atmosphere;
+    var request = { url: localhost_url,
+        //contentType: "application/json",
+        logLevel: 'debug',
+        transport: 'websocket',
+        trackMessageLength: true,
+        fallbackTransport: 'long-polling'};
+
+    request.onOpen = function (response) {
+        //TODO FLOWER show diode on frontend
+        console.log("connected to WS, add some diode on frontend");
+    };
+
+    request.onMessage = function (response) {
+        var msgBody = response.responseBody;
+        console.log("reposnse body: " + msgBody);
+        onAnyMessage();
+        try {
+            var msg = jQuery.parseJSON(msgBody);
+        } catch (e) {
+            console.log('This doesn\'t look like a valid JSON: ', msgBody);
+            return;
+        }
+        var type = msg.type;
+
+        if (type === "HEARTBEAT") {
+             //TODO FLOWER - do nothing, or show somethink on diode
+            onHeartbeat();
+        } else if (type === "RESPONSE") {
+            //TODO FLOWER serice it!
+            console.log("it is state of element" + msg.data);
+            console.log("it is chair element" + msg.code);
+        } else if (type === "LOG") {
+            //TODO FLOWER show it for user
+            console.log("logs from device" + msg.data)
+        }
+    };
+
+
+    request.onClose = function (response) {
+        logged = false;
     }
+
+    request.onError = function (response) {
+        statusLed.removeClass('led-green').addClass('led-red');
+        content.html($('<p>', { text: 'Sorry, but there\'s some problem with your '
+            + 'socket or the server is down' }));
+    };
+
+    subSocket = socket.subscribe(request);
+
+    function onHeartbeat() {
+        flicker(statusLed, "led-green", "led-blue", 200);
+    }
+
+    function onAnyMessage() {
+        flicker(statusLed, "led-green", "led-orange", 100);
+    }
+
+    function flicker(object, removeClass, addClass, time) {
+        object.removeClass(removeClass).addClass(addClass);
+        setTimeout(function () {
+            object.removeClass(addClass).addClass(removeClass);
+        }, time);
+    }
+});
+
+//TODO FLOWER do it in that same way, to send me message type ACTION, data %of state
+//ex
+//subSocket.push(jQuery.stringifyJSON({data:76, type: 'ACTION', code:PF }));
+function sendNotification(message) {
+    subSocket.push(jQuery.stringifyJSON({message: message, type: 'NOTIFICATION' }));
 }
+
+function sendActionMessage(deviceId, raspiPin, action, message) {
+    subSocket.push(jQuery.stringifyJSON({deviceId: deviceId, raspiPin: raspiPin, action: action, type: 'ACTION', message: message }));
+}
+
+
+
+
+
+
+
+
+
+
+
+//var loc = window.location, new_uri;
+//if (loc.protocol === "https:") {
+//    new_uri = "wss:";
+//} else {
+//    new_uri = "ws:";
+//}
+//new_uri += "//" + loc.host;
+//new_uri += loc.pathname + "rest/message/device";
+//
+//var socket = new WebSocket(new_uri);
+//
+//socket.onopen = function() {
+//    alert("Connected");
+//}
+//
+//socket.onmessage = function(msg){
+//    console.log(msg);
+//}
+//
+//socket.onclose = function(){
+//    alert("Connection terminated");
+//}
+//
+//
+//jQuery.fn.toggleVisibility = function() {
+//    if ($(this).css('visibility') == 'hidden'){
+//        $(this).css('visibility', 'visible');
+//    } else {
+//        $(this).css('visibility', 'hidden');
+//    }
+//}

@@ -2,6 +2,7 @@ package pl.wroc.pwr.armchair.element;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static pl.wroc.pwr.armchair.element.Direction.BACKWARD;
@@ -15,7 +16,7 @@ public class Element {
     private String code;
     private String description;
     private Integer port;
-    private Map<Direction, Integer> bits;
+    private Map<Direction, Integer> bits = new HashMap<>();
     private Integer currentState;
     private Integer maxState;
     private Integer counter;
