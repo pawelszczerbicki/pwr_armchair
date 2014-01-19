@@ -373,7 +373,7 @@ $(function () {
 
     request.onMessage = function (response) {
         var msgBody = response.responseBody;
-        console.log("reposnse body: " + msgBody);
+        console.log("response body: " + msgBody);
         onAnyMessage();
         try {
             var msg = jQuery.parseJSON(msgBody);
@@ -436,44 +436,10 @@ function sendActionMessage(deviceId, raspiPin, action, message) {
     subSocket.push(jQuery.stringifyJSON({deviceId: deviceId, raspiPin: raspiPin, action: action, type: 'ACTION', message: message }));
 }
 
-
-
-
-
-
-
-
-
-
-
-//var loc = window.location, new_uri;
-//if (loc.protocol === "https:") {
-//    new_uri = "wss:";
-//} else {
-//    new_uri = "ws:";
-//}
-//new_uri += "//" + loc.host;
-//new_uri += loc.pathname + "rest/message/device";
-//
-//var socket = new WebSocket(new_uri);
-//
-//socket.onopen = function() {
-//    alert("Connected");
-//}
-//
-//socket.onmessage = function(msg){
-//    console.log(msg);
-//}
-//
-//socket.onclose = function(){
-//    alert("Connection terminated");
-//}
-//
-//
-//jQuery.fn.toggleVisibility = function() {
-//    if ($(this).css('visibility') == 'hidden'){
-//        $(this).css('visibility', 'visible');
-//    } else {
-//        $(this).css('visibility', 'hidden');
-//    }
-//}
+jQuery.fn.toggleVisibility = function() {
+    if ($(this).css('visibility') == 'hidden'){
+        $(this).css('visibility', 'visible');
+    } else {
+        $(this).css('visibility', 'hidden');
+    }
+}
