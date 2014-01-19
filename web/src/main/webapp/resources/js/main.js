@@ -22,42 +22,42 @@ jQuery(function($){
         point2 : {
             bezierStart : { x: 430, y: 50 },
             bezierEnd : { x: 430, y: 150 },
-            end : { x: 405, y: 150 },
+            end : { x: 405, y: 150 }
         },
         point3 : {
             bezierStart : { x: 440, y: 150 },
             bezierEnd : { x: 430, y: 400 },
-            end : { x: 380, y: 410 },
+            end : { x: 380, y: 410 }
         },
         point4 : {
             bezierStart : { x: 380, y: 420 },
             bezierEnd : { x: 100, y: 400 },
-            end : { x: 100, y: 350 },
+            end : { x: 100, y: 350 }
         },
         point5 : {
             bezierStart : { x: 100, y: 290 },
             bezierEnd : { x: 340, y: 350 },
-            end : { x: 360, y: 370 },
+            end : { x: 360, y: 370 }
         },
         point6 : {
             bezierStart : { x: 355, y: 340 },
             bezierEnd : { x: 355, y: 320 },
-            end : { x: 355, y: 295 },
+            end : { x: 355, y: 295 }
         },
         point7 : {
             bezierStart : { x: 340, y: 270 },
             bezierEnd : { x: 345, y: 245 },
-            end : { x: 360, y: 230 },
+            end : { x: 360, y: 230 }
         },
         point8 : {
             bezierStart : { x: 370, y: 150 },
             bezierEnd : { x: 395, y: 150 },
-            end : { x: 395, y: 150 },
+            end : { x: 395, y: 150 }
         },
         point9 : {
             bezierStart : { x: 370, y: 150 },
             bezierEnd : { x: 370, y: 50 },
-            end : { x: 400, y: 50 },
+            end : { x: 400, y: 50 }
         }
     }
 
