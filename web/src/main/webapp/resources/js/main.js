@@ -352,7 +352,7 @@ jQuery(function($){
 
 var subSocket;
 $(function () {
-    var localhost_url = 'http://localhost:8080/rest/message/device';
+    var localhost_url = 'http://pawelszczerbicki.pl:8080/armchair/rest/message/device';
     var content = $('#content');
     var input = $('#input');
     var status = $('#status');
