@@ -111,6 +111,8 @@ jQuery(function($){
             }
             redrawSeat(newSeat);
 
+            sendAction("SP", slider.percent);
+
             lastPercentage['bottom'] = slider.percent;
 
         }
@@ -147,6 +149,8 @@ jQuery(function($){
             newSeat.point9.bezierEnd.x -= difference;
             redrawSeat(newSeat);
 
+            sendAction("PO", slider.percent);
+
             lastPercentage['top'] = slider.percent;
         }
     });
@@ -169,6 +173,8 @@ jQuery(function($){
             newSeat.point2.bezierStart.x -= difference;
             newSeat.point9.bezierEnd.x -= difference;
             redrawSeat(newSeat);
+
+            sendAction("PZ", slider.percent);
 
             lastPercentage['header-h'] = slider.percent;
         }
@@ -193,6 +199,8 @@ jQuery(function($){
             newSeat.point9.bezierEnd.y -= difference;
             redrawSeat(newSeat);
 
+            sendAction("ZG", slider.percent);
+
             lastPercentage['header-v'] = slider.percent;
         }
     });
@@ -213,6 +221,8 @@ jQuery(function($){
             newSeat.point7.bezierStart.x -= difference;
             newSeat.point7.bezierEnd.x -= difference;
             redrawSeat(newSeat);
+
+            sendAction("GW", slider.percent);
 
             lastPercentage['middle-h'] = slider.percent;
         }
@@ -239,6 +249,8 @@ jQuery(function($){
             newSeat.point7.bezierEnd.y -= difference;
             redrawSeat(newSeat);
 
+            sendAction("GG", slider.percent);
+
             lastPercentage['middle-v'] = slider.percent;
         }
     });
@@ -260,6 +272,8 @@ jQuery(function($){
             newSeat.point4.bezierEnd.x -= difference;
             newSeat.point5.bezierStart.x -= difference;
             redrawSeat(newSeat);
+
+            sendAction("WF", slider.percent);
 
             lastPercentage['bottom-h'] = slider.percent;
 
@@ -283,6 +297,8 @@ jQuery(function($){
             newSeat.point4.bezierEnd.y -= difference;
             newSeat.point5.bezierStart.y -= difference;
             redrawSeat(newSeat);
+
+            sendAction("PF", slider.percent);
 
             lastPercentage['bottom-v-head'] = slider.percent;
 
@@ -309,6 +325,8 @@ jQuery(function($){
             newSeat.point5.bezierEnd.y -= difference;
             newSeat.point6.bezierStart.y -= difference;
             redrawSeat(newSeat);
+
+            sendAction("UG", slider.percent);
 
             lastPercentage['bottom-v-tail'] = slider.percent;
 
@@ -425,15 +443,8 @@ $(function () {
     }
 });
 
-//TODO FLOWER do it in that same way, to send me message type ACTION, data %of state
-//ex
-//subSocket.push(jQuery.stringifyJSON({data:76, type: 'ACTION', code:PF }));
-function sendNotification(message) {
-    subSocket.push(jQuery.stringifyJSON({message: message, type: 'NOTIFICATION' }));
-}
-
-function sendActionMessage(deviceId, raspiPin, action, message) {
-    subSocket.push(jQuery.stringifyJSON({deviceId: deviceId, raspiPin: raspiPin, action: action, type: 'ACTION', message: message }));
+function sendAction(code, data) {
+    subSocket.push(jQuery.stringifyJSON({data: data, type: 'ACTION', code: code }));
 }
 
 jQuery.fn.toggleVisibility = function() {
