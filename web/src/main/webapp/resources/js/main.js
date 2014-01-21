@@ -95,7 +95,7 @@ jQuery(function($){
     }
 
     $("#slider-bottom").pathslider({
-        points     : [ -25,150,   0,0,   0,0,  325,150  ],
+        points     : [ 0,150,   0,0,   0,0,  325,150  ],
         value      : 50,
         rotateGrip : true,
         tolerance  : 3,
@@ -172,7 +172,7 @@ jQuery(function($){
     });
 
     $("#slider-middle-v").pathslider({
-        points     : [ 100,100,   0,0,   0,0,  100,175  ],
+        points     : [ 75,100,   0,0,   0,0,  75,175  ],
         value      : 50,
         rotateGrip : true,
         tolerance  : 3,
@@ -315,7 +315,6 @@ jQuery(function($){
 
         var percent = parseInt(obj.data);
 
-        console.log('sp moved');
         var difference = (lastPercentage['bottom'] - percent)/4;
 
         for (var point in newSeat) {
@@ -326,6 +325,8 @@ jQuery(function($){
             }
         }
         redrawSeat(newSeat);
+
+        $('.canvas-container-content > :not(canvas)').css('margin-left', '-=' + difference + 'px');
 
         lastPercentage['bottom'] = percent;
 
@@ -347,7 +348,7 @@ jQuery(function($){
         lastPercentage['header-v'] = percent;
 
         $("#slider-header-v").pathslider(percent, function(slider){
-            slider.update();
+//            slider.update();
         });
     }).on('seat.wf', function(e, obj){
 
@@ -438,7 +439,7 @@ jQuery(function($){
 var subSocket;
 
 $(function () {
-    var localhost_url = 'http://192.168.0.20:8080/rest/message/device';
+    var localhost_url = 'http://pawelszczerbicki.pl:8080/armchair/rest/message/device';
     var content = $('#content');
     var input = $('#input');
     var status = $('#status');
@@ -476,8 +477,12 @@ $(function () {
             onHeartbeat();
         } else if (type === "RESPONSE") {
 
-            if(msg.data === 'MOVING') {
+            if(msg.data === 'START_MOVING') {
                 blockUI();
+            }
+            else if(msg.data === 'STOP_MOVING') {
+                if(!calibrating)
+                    $.unblockUI();
             }
             else {
 
@@ -512,8 +517,8 @@ $(function () {
 
                 }
 
-                if(!calibrating)
-                    $.unblockUI();
+//                if(!calibrating)
+//                    $.unblockUI();
             }
 
             //TODO FLOWER serice it!
@@ -584,6 +589,11 @@ function blockUI(){
             '-moz-border-radius': '10px',
             opacity: .5,
             color: '#fff'
+        },
+        overlayCSS:  {
+            backgroundColor: '#666',
+            opacity:         0.1,
+            cursor:          'wait'
         }
     });
 }
