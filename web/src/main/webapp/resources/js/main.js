@@ -1,4 +1,6 @@
 
+var mainContainer = '.canvas-container-content';
+
 jQuery(function($){
     var canvas = document.getElementById('canvas-seat-control');
     var context = canvas.getContext('2d');
@@ -99,21 +101,9 @@ jQuery(function($){
         tolerance  : 3,
         range      : 30,
         curve      : { width:1, color:"#d0d0d0", cap:"round" },
-        change     : function(e, slider){
-            var difference = (lastPercentage['bottom'] - slider.percent)/4;
-
-            for (var point in newSeat) {
-                for (var desc in newSeat[point]) {
-                    for (var pos in newSeat[point][desc]) {
-                        newSeat[point][desc].x -= difference;
-                    }
-                }
-            }
-            redrawSeat(newSeat);
+        stop     : function(e, slider){
 
             sendAction("SP", slider.percent);
-
-            lastPercentage['bottom'] = slider.percent;
 
         }
     });
@@ -128,30 +118,8 @@ jQuery(function($){
         tolerance  : 3,
         range      : 30,
         curve      : { width:1, color:"#d0d0d0", cap:"round" },
-        change     : function(e, slider){
-            var difference = (lastPercentage['top'] - slider.percent)/4;
-
-            newSeat.point1.start.x -= difference;
-            newSeat.point2.bezierStart.x -= difference;
-            newSeat.point2.bezierEnd.x -= difference;
-            newSeat.point2.end.x -= difference;
-            newSeat.point3.bezierStart.x -= difference;
-            newSeat.point6.bezierEnd.x -= difference/2;
-            newSeat.point6.end.x -= difference/2;
-            newSeat.point7.bezierStart.x -= difference/2;
-            newSeat.point7.bezierEnd.x -= difference/2;
-            newSeat.point7.end.x -= difference/2;
-            newSeat.point8.bezierStart.x -= difference/2;
-            newSeat.point8.bezierEnd.x -= difference;
-            newSeat.point8.end.x -= difference;
-            newSeat.point9.end.x -= difference;
-            newSeat.point9.bezierStart.x -= difference;
-            newSeat.point9.bezierEnd.x -= difference;
-            redrawSeat(newSeat);
-
+        stop     : function(e, slider){
             sendAction("PO", slider.percent);
-
-            lastPercentage['top'] = slider.percent;
         }
     });
     $("#slider-top .pathslider-grip").hover(function(){
@@ -165,18 +133,8 @@ jQuery(function($){
         tolerance  : 3,
         range      : 30,
         curve      : { width:1, color:"#d0d0d0", cap:"round" },
-        change     : function(e, slider){
-            var difference = (lastPercentage['header-h'] - slider.percent)/4;
-
-            newSeat.point1.start.x -= difference;
-            newSeat.point9.end.x -= difference;
-            newSeat.point2.bezierStart.x -= difference;
-            newSeat.point9.bezierEnd.x -= difference;
-            redrawSeat(newSeat);
-
+        stop     : function(e, slider){
             sendAction("PZ", slider.percent);
-
-            lastPercentage['header-h'] = slider.percent;
         }
     });
     $("#slider-header-h .pathslider-grip").hover(function(){
@@ -190,18 +148,8 @@ jQuery(function($){
         tolerance  : 3,
         range      : 30,
         curve      : { width:1, color:"#d0d0d0", cap:"round" },
-        change     : function(e, slider){
-            var difference = (lastPercentage['header-v'] - slider.percent)/4;
-
-            newSeat.point1.start.y -= difference;
-            newSeat.point9.end.y -= difference;
-            newSeat.point2.bezierStart.y -= difference;
-            newSeat.point9.bezierEnd.y -= difference;
-            redrawSeat(newSeat);
-
+        stop     : function(e, slider){
             sendAction("ZG", slider.percent);
-
-            lastPercentage['header-v'] = slider.percent;
         }
     });
     $("#slider-header-v .pathslider-grip").hover(function(){
@@ -215,16 +163,8 @@ jQuery(function($){
         tolerance  : 3,
         range      : 30,
         curve      : { width:1, color:"#d0d0d0", cap:"round" },
-        change     : function(e, slider){
-            var difference = (lastPercentage['middle-h'] - slider.percent)/4;
-
-            newSeat.point7.bezierStart.x -= difference;
-            newSeat.point7.bezierEnd.x -= difference;
-            redrawSeat(newSeat);
-
+        stop     : function(e, slider){
             sendAction("GW", slider.percent);
-
-            lastPercentage['middle-h'] = slider.percent;
         }
     });
     $("#slider-middle-h .pathslider-grip").hover(function(){
@@ -238,20 +178,8 @@ jQuery(function($){
         tolerance  : 3,
         range      : 30,
         curve      : { width:1, color:"#d0d0d0", cap:"round" },
-        change     : function(e, slider){
-
-            var difference = (lastPercentage['middle-v'] - slider.percent)/4;
-
-            newSeat.point6.end.y -= difference;
-            newSeat.point6.bezierEnd.y -= difference;
-            newSeat.point7.bezierStart.y -= difference;
-            newSeat.point7.end.y -= difference;
-            newSeat.point7.bezierEnd.y -= difference;
-            redrawSeat(newSeat);
-
+        stop     : function(e, slider){
             sendAction("GG", slider.percent);
-
-            lastPercentage['middle-v'] = slider.percent;
         }
     });
     $("#slider-middle-v .pathslider-grip").hover(function(){
@@ -265,18 +193,8 @@ jQuery(function($){
         tolerance  : 3,
         range      : 30,
         curve      : { width:1, color:"#d0d0d0", cap:"round" },
-        change     : function(e, slider){
-            var difference = (lastPercentage['bottom-h'] - slider.percent)/4;
-
-            newSeat.point4.end.x -= difference;
-            newSeat.point4.bezierEnd.x -= difference;
-            newSeat.point5.bezierStart.x -= difference;
-            redrawSeat(newSeat);
-
+        stop     : function(e, slider){
             sendAction("WF", slider.percent);
-
-            lastPercentage['bottom-h'] = slider.percent;
-
         }
     });
     $("#slider-bottom-h .pathslider-grip").hover(function(){
@@ -290,17 +208,9 @@ jQuery(function($){
         tolerance  : 3,
         range      : 30,
         curve      : { width:1, color:"#d0d0d0", cap:"round" },
-        change     : function(e, slider){
-            var difference = (lastPercentage['bottom-v-head'] - slider.percent)/4;
-
-            newSeat.point4.end.y -= difference;
-            newSeat.point4.bezierEnd.y -= difference;
-            newSeat.point5.bezierStart.y -= difference;
-            redrawSeat(newSeat);
+        stop     : function(e, slider){
 
             sendAction("PF", slider.percent);
-
-            lastPercentage['bottom-v-head'] = slider.percent;
 
         }
     });
@@ -315,21 +225,8 @@ jQuery(function($){
         tolerance  : 3,
         range      : 30,
         curve      : { width:1, color:"#d0d0d0", cap:"round" },
-        change     : function(e, slider){
-            var difference = (lastPercentage['bottom-v-tail'] - slider.percent)/4;
-
-            newSeat.point3.end.y -= difference;
-            newSeat.point3.bezierEnd.y -= difference;
-            newSeat.point4.bezierStart.y -= difference;
-            newSeat.point5.end.y -= difference;
-            newSeat.point5.bezierEnd.y -= difference;
-            newSeat.point6.bezierStart.y -= difference;
-            redrawSeat(newSeat);
-
+        stop     : function(e, slider){
             sendAction("UG", slider.percent);
-
-            lastPercentage['bottom-v-tail'] = slider.percent;
-
         }
     });
     $("#slider-bottom-v-tail .pathslider-grip").hover(function(){
@@ -361,16 +258,187 @@ jQuery(function($){
         $(this).find('i').removeClass(signToRemove).addClass(sign);
     });
 
+    $('#btn-calibrate').click(function(){
+        sendCalibrate();
+    });
+
+    $(mainContainer).on('seat.pf', function(e, obj){
+
+        console.log('pf moved');
+
+        var percent = parseInt(obj.data);
+
+        var difference = (lastPercentage['bottom-v-head'] - percent)/4;
+
+        newSeat.point4.end.y -= difference;
+        newSeat.point4.bezierEnd.y -= difference;
+        newSeat.point5.bezierStart.y -= difference;
+        redrawSeat(newSeat);
+
+        lastPercentage['bottom-v-head'] = percent;
+
+        $("#slider-bottom-v-head").pathslider(percent, function(slider){
+//            slider.update();
+        });
+
+    }).on('seat.po', function(e, obj){
+
+        console.log('po moved');
+        var percent = parseInt(obj.data);
+        var difference = (lastPercentage['top'] - percent)/4;
+
+        newSeat.point1.start.x -= difference;
+        newSeat.point2.bezierStart.x -= difference;
+        newSeat.point2.bezierEnd.x -= difference;
+        newSeat.point2.end.x -= difference;
+        newSeat.point3.bezierStart.x -= difference;
+        newSeat.point6.bezierEnd.x -= difference/2;
+        newSeat.point6.end.x -= difference/2;
+        newSeat.point7.bezierStart.x -= difference/2;
+        newSeat.point7.bezierEnd.x -= difference/2;
+        newSeat.point7.end.x -= difference/2;
+        newSeat.point8.bezierStart.x -= difference/2;
+        newSeat.point8.bezierEnd.x -= difference;
+        newSeat.point8.end.x -= difference;
+        newSeat.point9.end.x -= difference;
+        newSeat.point9.bezierStart.x -= difference;
+        newSeat.point9.bezierEnd.x -= difference;
+        redrawSeat(newSeat);
+
+        lastPercentage['top'] = percent;
+
+        $("#slider-top").pathslider(percent, function(slider){
+            slider.update();
+        });
+
+    }).on('seat.sp', function(e, obj){
+
+        var percent = parseInt(obj.data);
+
+        console.log('sp moved');
+        var difference = (lastPercentage['bottom'] - percent)/4;
+
+        for (var point in newSeat) {
+            for (var desc in newSeat[point]) {
+                for (var pos in newSeat[point][desc]) {
+                    newSeat[point][desc].x -= difference;
+                }
+            }
+        }
+        redrawSeat(newSeat);
+
+        lastPercentage['bottom'] = percent;
+
+        $("#slider-bottom").pathslider(percent, function(slider){
+//            slider.update();
+        });
+
+    }).on('seat.zg', function(e, obj){
+
+        var percent = parseInt(obj.data);
+        var difference = (lastPercentage['header-v'] - percent)/4;
+
+        newSeat.point1.start.y -= difference;
+        newSeat.point9.end.y -= difference;
+        newSeat.point2.bezierStart.y -= difference;
+        newSeat.point9.bezierEnd.y -= difference;
+        redrawSeat(newSeat);
+
+        lastPercentage['header-v'] = percent;
+
+        $("#slider-header-v").pathslider(percent, function(slider){
+            slider.update();
+        });
+    }).on('seat.wf', function(e, obj){
+
+        var percent = parseInt(obj.data);
+        var difference = (lastPercentage['bottom-h'] - percent)/4;
+
+        newSeat.point4.end.x -= difference;
+        newSeat.point4.bezierEnd.x -= difference;
+        newSeat.point5.bezierStart.x -= difference;
+        redrawSeat(newSeat);
+
+        lastPercentage['bottom-h'] = percent;
+
+        $("#slider-bottom-h").pathslider(percent, function(slider){
+//            slider.update();
+        });
+    }).on('seat.gg', function(e, obj){
+
+        var percent = parseInt(obj.data);
+        var difference = (lastPercentage['middle-v'] - percent)/4;
+
+        newSeat.point6.end.y -= difference;
+        newSeat.point6.bezierEnd.y -= difference;
+        newSeat.point7.bezierStart.y -= difference;
+        newSeat.point7.end.y -= difference;
+        newSeat.point7.bezierEnd.y -= difference;
+        redrawSeat(newSeat);
+
+        lastPercentage['middle-v'] = percent;
+
+        $("#slider-middle-v").pathslider(percent, function(slider){
+//            slider.update();
+        });
+    }).on('seat.ug', function(e, obj){
+
+        var percent = parseInt(obj.data);
+        var difference = (lastPercentage['bottom-v-tail'] - percent)/4;
+
+        newSeat.point3.end.y -= difference;
+        newSeat.point3.bezierEnd.y -= difference;
+        newSeat.point4.bezierStart.y -= difference;
+        newSeat.point5.end.y -= difference;
+        newSeat.point5.bezierEnd.y -= difference;
+        newSeat.point6.bezierStart.y -= difference;
+        redrawSeat(newSeat);
+
+        lastPercentage['bottom-v-tail'] = percent;
+
+        $("#slider-bottom-v-tail").pathslider(percent, function(slider){
+//            slider.update();
+        });
+    }).on('seat.gw', function(e, obj){
+
+        var percent = parseInt(obj.data);
+        var difference = (lastPercentage['middle-h'] - percent)/4;
+
+        newSeat.point7.bezierStart.x -= difference;
+        newSeat.point7.bezierEnd.x -= difference;
+        redrawSeat(newSeat);
+
+        lastPercentage['middle-h'] = percent;
+
+        $("#slider-middle-h").pathslider(percent, function(slider){
+//            slider.update();
+        });
+    }).on('seat.pz', function(e, obj){
+
+        var percent = parseInt(obj.data);
+        var difference = (lastPercentage['header-h'] - percent)/4;
+
+        newSeat.point1.start.x -= difference;
+        newSeat.point9.end.x -= difference;
+        newSeat.point2.bezierStart.x -= difference;
+        newSeat.point9.bezierEnd.x -= difference;
+        redrawSeat(newSeat);
+
+        lastPercentage['header-h'] = percent;
+
+        $("#slider-header-h").pathslider(percent, function(slider){
+//            slider.update();
+        });
+    });
 
 });
 
 
 // websocket stuff
-
-
 var subSocket;
+
 $(function () {
-    var localhost_url = 'http://localhost:8080/rest/message/device';
+    var localhost_url = 'http://192.168.0.20:8080/rest/message/device';
     var content = $('#content');
     var input = $('#input');
     var status = $('#status');
@@ -389,6 +457,8 @@ $(function () {
         console.log("connected to WS, add some diode on frontend");
     };
 
+    var calibrating = false;
+
     request.onMessage = function (response) {
         var msgBody = response.responseBody;
         console.log("response body: " + msgBody);
@@ -405,9 +475,61 @@ $(function () {
              //TODO FLOWER - do nothing, or show somethink on diode
             onHeartbeat();
         } else if (type === "RESPONSE") {
+
+            if(msg.data === 'MOVING') {
+                blockUI();
+            }
+            else {
+
+                switch (msg.code) {
+                    case "PF":
+                        $(mainContainer).trigger('seat.pf', { data : msg.data });
+                        break;
+                    case "PO":
+                        $(mainContainer).trigger('seat.po', { data : msg.data });
+                        break;
+                    case "SP":
+                        $(mainContainer).trigger('seat.sp', { data : msg.data });
+                        break;
+                    case "ZG":
+                        $(mainContainer).trigger('seat.zg', { data : msg.data });
+                        break;
+                    case "WF":
+                        $(mainContainer).trigger('seat.wf', { data : msg.data });
+                        break;
+                    case "GG":
+                        $(mainContainer).trigger('seat.gg', { data : msg.data });
+                        break;
+                    case "UG":
+                        $(mainContainer).trigger('seat.ug', { data : msg.data });
+                        break;
+                    case "GW":
+                        $(mainContainer).trigger('seat.gw', { data : msg.data });
+                        break;
+                    case "PZ":
+                        $(mainContainer).trigger('seat.pz', { data : msg.data });
+                        break;
+
+                }
+
+                if(!calibrating)
+                    $.unblockUI();
+            }
+
             //TODO FLOWER serice it!
             console.log("it is state of element" + msg.data);
             console.log("it is chair element" + msg.code);
+        } else if(type === "CALIBRATE") {
+            if(msg.data === "START") {
+                console.log("calibrating started");
+                calibrating = true;
+                //blockUI();
+            }
+            else if(msg.data === "STOP") {
+                console.log("calibrating finished");
+                calibrating = false;
+                $.unblockUI();
+            }
         } else if (type === "LOG") {
             //TODO FLOWER show it for user
             console.log("logs from device" + msg.data)
@@ -445,6 +567,25 @@ $(function () {
 
 function sendAction(code, data) {
     subSocket.push(jQuery.stringifyJSON({data: data, type: 'ACTION', code: code }));
+}
+
+function sendCalibrate() {
+    subSocket.push(jQuery.stringifyJSON({type: 'CALIBRATE'}));
+}
+
+function blockUI(){
+    $.blockUI({
+        message: 'Seat is moving...',
+        css: {
+            border: 'none',
+            padding: '15px',
+            backgroundColor: '#000',
+            '-webkit-border-radius': '10px',
+            '-moz-border-radius': '10px',
+            opacity: .5,
+            color: '#fff'
+        }
+    });
 }
 
 jQuery.fn.toggleVisibility = function() {

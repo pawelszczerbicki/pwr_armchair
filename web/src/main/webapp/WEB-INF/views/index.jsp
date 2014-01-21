@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-md-3">
             <div class="sidebar-content">
-                <div class="btn btn-primary btn-block">asdasda</div>
+                <div id="btn-calibrate" class="btn btn-primary btn-block">Calibrate</div>
             </div>
         </div>
         <div class="col-md-9">

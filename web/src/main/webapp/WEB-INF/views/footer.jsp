@@ -3,5 +3,6 @@
 <script type="text/javascript" src="jquery/jquery.atmosphere.js"></script>
 <%--<script src="<c:url value='/resources/js/jquery-2.0.3.min.js'/>"></script>--%>
 <script src="<c:url value='/resources/js/jquery.pathslider.min.js'/>"></script>
+<script src="<c:url value='/resources/js/jquery.blockUI.js'/>"></script>
 <%--<script src="<c:url value='/resources/js/jquery.atmosphere.js'/>"></script>--%>
 <script src="<c:url value='/resources/js/main.js'/>"></script>

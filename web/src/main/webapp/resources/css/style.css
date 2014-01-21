@@ -38,8 +38,8 @@ canvas#canvas-seat-control {
     border: 1px solid #000;
     background: #fff;
     border-radius: 5px;
-    height: 160px;
-    width: 120px;
+    height: 172px;
+    width: 132px;
 }
 
 #image-container > img {
