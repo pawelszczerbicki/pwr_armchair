@@ -21,7 +21,7 @@ import static pl.wroc.pwr.armchair.element.Direction.FORWARD;
  */
 public class ArmchairController {
 
-    private final int READ_COUNTER_DELAY = 500;
+    private final int READ_COUNTER_DELAY = 50;
     private static ArmchairController instance = new ArmchairController();
     private Driver driver = Driver.getInstance();
     private Map<String, Element> elements = new HashMap<>();
@@ -31,7 +31,7 @@ public class ArmchairController {
     private int mockCounterValue = 0;
 
     private ArmchairController() {
-         setConfiguration(parser.getDefaultElements());
+        setConfiguration(parser.getDefaultElements());
     }
 
     public static ArmchairController getInstance() {
@@ -41,51 +41,66 @@ public class ArmchairController {
 
     public void move(String name, int percentageValue) {
         Element e = elements.get(name);
+        System.out.println(e);
         Integer stepValue = getMoveStep(percentageValue, e);
         sendMessage(e.getCode(), "MOVING");
         if (stepValue == 0) {
+            System.out.println("step value 0");
             sendMessage(e.getCode(), e.getCurrentState().toString());
             return;
         }
+        System.out.println("starting moving");
         startMovingAsync(e, stepValue);
         interruptMoving(e, stepValue, mockCounterValue);
     }
 
     private void interruptMoving(Element e, int stepValue, int counter) {
         Integer oldCounter;
-        Integer currentCounter;
-        Integer doneSteps;
+        Integer currentCounter = mockCounterValue;
+        Integer doneSteps = 0;
         do {
+            mockCounterValue++;
+            oldCounter = new Integer(currentCounter);
             currentCounter = new Integer(mockCounterValue);
             doneSteps = currentCounter - counter;
-            oldCounter = currentCounter;
+            sendMessage(e.getCode(), String.valueOf(new Double((double) (e.getCurrentState() + doneSteps) / e.getMaxState() * 100).intValue()));
+            System.out.println("mock counter: " + mockCounterValue);
+            System.out.println("old counter: " + oldCounter);
+            System.out.println("done steps: " + doneSteps);
             try {
                 Thread.sleep(READ_COUNTER_DELAY);
             } catch (InterruptedException ex) {
 
             }
-            mockCounterValue++;
+
         } while (shouldGoOnMoving(stepValue, oldCounter, currentCounter, doneSteps));
         stopMovingAndSendMessage(e, doneSteps);
     }
 
     private boolean shouldGoOnMoving(int stepValue, Integer oldCounter, Integer currentCounter, Integer doneSteps) {
-        return doneSteps < Math.abs(stepValue) && oldCounter != currentCounter;
+        System.out.println("go on moving?");
+        System.out.println("counters different: " + new Boolean(!oldCounter.equals(currentCounter)).toString());
+        System.out.println("Abs value: " + new Boolean(doneSteps < Math.abs(stepValue)).toString());
+        return doneSteps < Math.abs(stepValue) && !oldCounter.equals(currentCounter);
     }
 
     private void stopMovingAndSendMessage(Element e, Integer doneSteps) {
         driver.setZero(e.getPort());
-        e.setCurrentState(doneSteps);
-        sendMessage(e.getCode(), doneSteps.toString());
+        e.setCurrentState(e.getCurrentState() + doneSteps);
+        sendMessage(e.getCode(), String.valueOf(new Double((double) e.getCurrentState() / e.getMaxState() * 100).intValue()));
     }
 
     private int getMoveStep(int percentageValue, Element e) {
-        Integer stepValue = e.getMaxState() * percentageValue / 100;
+        System.out.println("percentage: " + percentageValue);
+        Integer stepValue = new Double(e.getMaxState() * percentageValue / 100).intValue();
+        System.out.println("step value:" + stepValue);
+        System.out.println("current :" + e.getCurrentState());
         return stepValue - e.getCurrentState();
     }
 
     private void startMovingAsync(Element element, int stepValue) {
         Direction d = stepValue > 0 ? FORWARD : BACKWARD;
+        System.out.println("Direction: " + d);
         driver.sendOneOnSpecificPos(element.getBit(d), element.getPort());
     }
 
@@ -97,7 +112,7 @@ public class ArmchairController {
         elements.clear();
         for (Element c : config) {
             elements.put(c.getCode(), c);
-           // driver.setPortDirection(c.getPort(), DioPortDir.Output);
+            // driver.setPortDirection(c.getPort(), DioPortDir.Output);
         }
     }
 

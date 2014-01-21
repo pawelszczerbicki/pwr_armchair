@@ -8,6 +8,7 @@ import org.atmosphere.cpr.Broadcaster;
 import org.atmosphere.cpr.BroadcasterFactory;
 import org.atmosphere.jersey.JerseyBroadcaster;
 import pl.wroc.pwr.message.Message;
+import pl.wroc.pwr.message.MessageType;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -42,6 +43,48 @@ public class PollWebservice {
     @Produces(MediaType.APPLICATION_JSON)
     public void broadcast(Message m, @PathParam("device") String device) throws InterruptedException {
         logger.info(String.format("Send message by: %s, content: %s ", device, m));
-        BroadcasterFactory.getDefault().lookup(device).broadcast(m);
+        Broadcaster b = BroadcasterFactory.getDefault().lookup(device);
+        b.broadcast(m);
+        if(device.equals("cywek")){
+            runMock(b, m);
+        }
+    }
+
+    private void runMock(Broadcaster b, Message m) {
+        if(m.getType() == MessageType.ACTION){
+            Message responseMessage = new Message();
+            responseMessage.setType(MessageType.RESPONSE);
+            responseMessage.setData("MOVING");
+            b.broadcast(m);
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            responseMessage.setCode("PF");
+            responseMessage.setData(String.valueOf(new Double(Math.random() * 100).intValue()));
+            b.broadcast(responseMessage);
+        } else if(m.getType() == MessageType.CALIBRATE){
+             Message calibrating = new Message();
+            calibrating.setType(MessageType.CALIBRATE);
+            calibrating.setData("START");
+            b.broadcast(calibrating);
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            for(int i=0; i<9; i++){
+                calibrating.setType(MessageType.RESPONSE);
+                calibrating.setCode("PF");
+                calibrating.setData(String.valueOf(new Double(Math.random() * 100).intValue()));
+                b.broadcast(calibrating);
+            }
+
+            calibrating.setType(MessageType.CALIBRATE);
+            calibrating.setData("STOP");
+            b.broadcast(calibrating);
+        }
+
     }
 }
