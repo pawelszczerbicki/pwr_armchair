@@ -23,7 +23,7 @@ import static org.apache.log4j.Logger.getLogger;
 @AtmosphereService(broadcaster = JerseyBroadcaster.class)
 public class PollWebservice {
 
-    private final Logger logger  = getLogger(getClass());
+    private final Logger logger = getLogger(getClass());
 
     @Suspend
     @GET
@@ -33,17 +33,15 @@ public class PollWebservice {
         Broadcaster privateChannel = BroadcasterFactory.getDefault().lookup(device, true);
         atmosphereResource.suspend(12, TimeUnit.MINUTES);
         privateChannel.addAtmosphereResource(atmosphereResource);
-        logger.info("Socket opened for: "+ device);
+        logger.info("Socket opened for: " + device);
         return "";
     }
 
     @POST
     @Path("{device}")
     @Produces(MediaType.APPLICATION_JSON)
-    public void broadcast(Message m, @PathParam("device") String device) {
+    public void broadcast(Message m, @PathParam("device") String device) throws InterruptedException {
         logger.info(String.format("Send message by: %s, content: %s ", device, m));
-        Broadcaster broadcaster = BroadcasterFactory.getDefault().lookup(device);
-        broadcaster.broadcast(m);
+        BroadcasterFactory.getDefault().lookup(device).broadcast(m);
     }
-
 }

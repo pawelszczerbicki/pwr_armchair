@@ -1,20 +1,20 @@
 package pl.wroc.pwr.armchair.armchair;
 
-import static pl.wroc.pwr.armchair.element.Direction.BACKWARD;
-import static pl.wroc.pwr.armchair.element.Direction.FORWARD;
+import pl.wroc.pwr.armchair.driver.Driver;
+import pl.wroc.pwr.armchair.element.Direction;
+import pl.wroc.pwr.armchair.element.Element;
+import pl.wroc.pwr.armchair.logger.Logger;
+import pl.wroc.pwr.armchair.ws.AtmosphereSender;
+import pl.wroc.pwr.armchair.ws.Message;
+import pl.wroc.pwr.armchair.ws.MessageType;
+import pl.wroc.pwr.armchair.ws.SettingsParser;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import pl.wroc.pwr.armchair.driver.Driver;
-import pl.wroc.pwr.armchair.element.Direction;
-import pl.wroc.pwr.armchair.element.Element;
-import pl.wroc.pwr.armchair.logger.Logger;
-import pl.wroc.pwr.armchair.ws.AtmosphereService;
-import pl.wroc.pwr.armchair.ws.Message;
-import pl.wroc.pwr.armchair.ws.MessageType;
-import Automation.BDaq.DioPortDir;
+import static pl.wroc.pwr.armchair.element.Direction.BACKWARD;
+import static pl.wroc.pwr.armchair.element.Direction.FORWARD;
 
 /**
  * Created by Pawel on 02.01.14.
@@ -25,10 +25,13 @@ public class ArmchairController {
     private static ArmchairController instance = new ArmchairController();
     private Driver driver = Driver.getInstance();
     private Map<String, Element> elements = new HashMap<>();
-    private AtmosphereService atmosphereService = AtmosphereService.getInstance();
-    private Logger logger = Logger.getInstance(getClass(), atmosphereService);
+    private AtmosphereSender sender = AtmosphereSender.getInstance();
+    private Logger logger = Logger.getInstance(getClass(), sender);
+    private SettingsParser parser = new SettingsParser();
+    private int mockCounterValue = 0;
 
     private ArmchairController() {
+         setConfiguration(parser.getDefaultElements());
     }
 
     public static ArmchairController getInstance() {
@@ -39,12 +42,13 @@ public class ArmchairController {
     public void move(String name, int percentageValue) {
         Element e = elements.get(name);
         Integer stepValue = getMoveStep(percentageValue, e);
+        sendMessage(e.getCode(), "MOVING");
         if (stepValue == 0) {
-            sendMessage(e.getCode(), "MOVING");
+            sendMessage(e.getCode(), e.getCurrentState().toString());
             return;
         }
         startMovingAsync(e, stepValue);
-        interruptMoving(e, stepValue, driver.getCounterValue(e.getCounter()));
+        interruptMoving(e, stepValue, mockCounterValue);
     }
 
     private void interruptMoving(Element e, int stepValue, int counter) {
@@ -52,7 +56,7 @@ public class ArmchairController {
         Integer currentCounter;
         Integer doneSteps;
         do {
-            currentCounter = driver.getCounterValue(e.getCounter());
+            currentCounter = new Integer(mockCounterValue);
             doneSteps = currentCounter - counter;
             oldCounter = currentCounter;
             try {
@@ -60,6 +64,7 @@ public class ArmchairController {
             } catch (InterruptedException ex) {
 
             }
+            mockCounterValue++;
         } while (shouldGoOnMoving(stepValue, oldCounter, currentCounter, doneSteps));
         stopMovingAndSendMessage(e, doneSteps);
     }
@@ -85,14 +90,17 @@ public class ArmchairController {
     }
 
     private void sendMessage(String code, String data) {
-        atmosphereService.send(new Message(MessageType.RESPONSE, code, data));
+        sender.send(new Message(MessageType.RESPONSE, code, data));
     }
 
     public void setConfiguration(List<Element> config) {
         elements.clear();
         for (Element c : config) {
             elements.put(c.getCode(), c);
-            driver.setPortDirection(c.getPort(), DioPortDir.Output);            
+           // driver.setPortDirection(c.getPort(), DioPortDir.Output);
         }
+    }
+
+    public void calibrate() {
     }
 }

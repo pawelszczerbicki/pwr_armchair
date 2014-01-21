@@ -17,36 +17,30 @@ public class AtmosphereService {
     private static Logger logger = Logger.getLogger(AtmosphereService.class);
     private String LOCAL_ADDRESS = "http://localhost:8080/rest/message/device";
     private MessageService messageService;
-    private Socket socket;
+    private static Socket socket;
     private RequestBuilder request;
-    private static AtmosphereService instance = new AtmosphereService();
-    public static AtmosphereService getInstance(){
-        return instance;
-    }
 
-    private AtmosphereService() {
+    public AtmosphereService() {
         final Gson gson = new Gson();
         Client client = ClientFactory.getDefault().newClient();
-         request = getTransport(gson, client);
+        request = getTransport(gson, client);
         socket = client.create();
         logger.info("Socket created with state: " + socket.status());
         messageService = new MessageService();
-    }
-
-    public void send(Message m) {
-        if (socket == null) throw new IllegalStateException("Socket is not initialized!");
         try {
-            socket.fire(m);
+            overrideMethodsAndOpenSocket(request);
         } catch (IOException e) {
-            logger.error("Could not fire socket and send message", e);
+            logger.error("Could not initialize socket.", e);
         }
+        AtmosphereSender.getInstance().setSocket(socket);
     }
 
-    public void openSocket() throws IOException {
+    private void overrideMethodsAndOpenSocket(RequestBuilder request) throws IOException {
         socket.on(new Function<Message>() {
             @Override
             public void on(Message m) {
-                logger.info("Message type: " + m.getType());
+                logger.info("Message: " + m.getType());
+                ;
                 messageService.service(m);
             }
         }).on(new Function<IOException>() {

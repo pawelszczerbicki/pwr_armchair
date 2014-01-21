@@ -1,6 +1,6 @@
 package pl.wroc.pwr.armchair.logger;
 
-import pl.wroc.pwr.armchair.ws.AtmosphereService;
+import pl.wroc.pwr.armchair.ws.AtmosphereSender;
 import pl.wroc.pwr.armchair.ws.Message;
 import pl.wroc.pwr.armchair.ws.MessageType;
 
@@ -16,13 +16,13 @@ public class Logger {
 
     private static Map<Class, Logger> loggers = new ConcurrentHashMap<Class, Logger>();
     private Class clazz;
-    private AtmosphereService atmosphereService;
+    private AtmosphereSender sender;
 
     private Logger() {
     }
 
-    private Logger(Class clazz, AtmosphereService atmosphereService) {
-        this.atmosphereService = atmosphereService;
+    private Logger(Class clazz, AtmosphereSender sender) {
+        this.sender = sender;
         this.clazz = clazz;
     }
 
@@ -30,8 +30,8 @@ public class Logger {
         return getInstance(clazz, null);
     }
 
-    public static Logger getInstance(Class clazz, AtmosphereService atm) {
-        loggers.put(clazz, new Logger(clazz, atm));
+    public static Logger getInstance(Class clazz, AtmosphereSender sender) {
+        loggers.put(clazz, new Logger(clazz, sender));
         return loggers.get(clazz);
     }
 
@@ -54,7 +54,7 @@ public class Logger {
     }
 
     private void sendMessage(String m) {
-        if (atmosphereService != null)
-            atmosphereService.send(new Message(MessageType.LOG, m));
+        if (sender != null)
+            sender.send(new Message(MessageType.LOG, m));
     }
 }

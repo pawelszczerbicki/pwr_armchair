@@ -9,5 +9,5 @@ public enum MessageType {
     //RESPONSE - message from device to clients - client should service it
     //LOG - logs from device, clients could show it for user.
     //HEARTBEAT  - to keep connection alive - everyone should ignore it
-    ACTION, CONFIG, RESPONSE, LOG, HEARTBEAT;
+    ACTION, CONFIG, RESPONSE, LOG, HEARTBEAT, CALIBRATE;
 }
