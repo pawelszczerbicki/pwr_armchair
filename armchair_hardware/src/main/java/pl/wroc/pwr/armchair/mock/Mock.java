@@ -15,7 +15,7 @@ public class Mock {
 	        		double old = 0d;
 	        		while (true) {
 	        			i++;	        			
-	        			double freqMeterCtrlValue = driver.getCounterValue();
+	        			double freqMeterCtrlValue = driver.getCounterValue(0);
 	        		
 						System.out.println("" + freqMeterCtrlValue);
 	        			if (freqMeterCtrlValue > old) {

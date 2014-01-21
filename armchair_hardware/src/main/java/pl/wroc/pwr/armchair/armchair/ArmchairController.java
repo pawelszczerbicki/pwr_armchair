@@ -1,5 +1,12 @@
 package pl.wroc.pwr.armchair.armchair;
 
+import static pl.wroc.pwr.armchair.element.Direction.BACKWARD;
+import static pl.wroc.pwr.armchair.element.Direction.FORWARD;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import pl.wroc.pwr.armchair.driver.Driver;
 import pl.wroc.pwr.armchair.element.Direction;
 import pl.wroc.pwr.armchair.element.Element;
@@ -7,13 +14,7 @@ import pl.wroc.pwr.armchair.logger.Logger;
 import pl.wroc.pwr.armchair.ws.AtmosphereService;
 import pl.wroc.pwr.armchair.ws.Message;
 import pl.wroc.pwr.armchair.ws.MessageType;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static pl.wroc.pwr.armchair.element.Direction.BACKWARD;
-import static pl.wroc.pwr.armchair.element.Direction.FORWARD;
+import Automation.BDaq.DioPortDir;
 
 /**
  * Created by Pawel on 02.01.14.
@@ -43,7 +44,7 @@ public class ArmchairController {
             return;
         }
         startMovingAsync(e, stepValue);
-        interruptMoving(e, stepValue, driver.getCounterValue());
+        interruptMoving(e, stepValue, driver.getCounterValue(e.getCounter()));
     }
 
     private void interruptMoving(Element e, int stepValue, int counter) {
@@ -51,7 +52,7 @@ public class ArmchairController {
         Integer currentCounter;
         Integer doneSteps;
         do {
-            currentCounter = driver.getCounterValue();
+            currentCounter = driver.getCounterValue(e.getCounter());
             doneSteps = currentCounter - counter;
             oldCounter = currentCounter;
             try {
@@ -91,6 +92,7 @@ public class ArmchairController {
         elements.clear();
         for (Element c : config) {
             elements.put(c.getCode(), c);
+            driver.setPortDirection(c.getPort(), DioPortDir.Output);            
         }
     }
 }

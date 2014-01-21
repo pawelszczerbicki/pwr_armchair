@@ -19,7 +19,8 @@ public class Driver {
 	private InstantDiCtrl instantDiCtrl = new InstantDiCtrl();
 	private InstantDoCtrl instantDoCtrl = new InstantDoCtrl();
 	private TimerPulseCtrl timerPulseCtrl = new TimerPulseCtrl();
-	private EventCounterCtrl counterCtrl = new EventCounterCtrl();
+	private EventCounterCtrl counterCtrl0 = new EventCounterCtrl();
+	private EventCounterCtrl counterCtrl1 = new EventCounterCtrl();
 	private ArrayList<DeviceTreeNode> installedDevices;
 
 	private Driver() {
@@ -41,10 +42,17 @@ public class Driver {
 			instantDiCtrl.setSelectedDevice(deviceInformation);
 			instantDoCtrl.setSelectedDevice(deviceInformation);
 			timerPulseCtrl.setSelectedDevice(deviceInformation);
-			counterCtrl.setSelectedDevice(deviceInformation);
+			counterCtrl0.setSelectedDevice(deviceInformation);
+			counterCtrl0.setChannel(0);
+			counterCtrl0.setEnabled(true);
+			
+			counterCtrl1.setSelectedDevice(deviceInformation);
+			counterCtrl1.setChannel(1);
+			counterCtrl1.setEnabled(true);
+			
 			portAmount = instantDiCtrl.getPortCount();
 			
-			enableCounter();
+//			enableCounter(0);
 		} catch (Exception ex) {
 			logger.error("Unable to select device!");
 			ex.printStackTrace();
@@ -125,16 +133,21 @@ public class Driver {
 		}
 	}
 
-	public void enableCounter() {
-		try {
-			counterCtrl.setChannel(0);
-			counterCtrl.setEnabled(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public void enableCounter(int counterNo) {
+//		try {
+//			counterCtrl0.setChannel(counterNo);
+//			counterCtrl0.setEnabled(true);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
-	public int getCounterValue() {
-		return counterCtrl.getValue();
+	public int getCounterValue(int channel) {
+		if (channel == 0) {
+			return counterCtrl0.getValue();
+		} else if (channel == 1) {
+			return counterCtrl1.getValue();
+		}
+		return 0;
 	}
 }
