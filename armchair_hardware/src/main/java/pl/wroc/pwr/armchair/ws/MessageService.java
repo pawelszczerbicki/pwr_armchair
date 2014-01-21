@@ -19,7 +19,7 @@ public class MessageService {
             controller.move(m.getCode(), Integer.parseInt(m.getData()));
         } else if (type == CONFIG) {
             controller.setConfiguration(parser.getElements(m.getData()));
-        } else if(type == CALIBRATE){
+        } else if(type == CALIBRATE && (m.getData() == null || m.getData().isEmpty())){
             controller.calibrate();
         }
     }

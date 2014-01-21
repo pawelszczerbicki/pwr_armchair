@@ -15,7 +15,7 @@ import java.io.IOException;
  */
 public class AtmosphereService {
     private static Logger logger = Logger.getLogger(AtmosphereService.class);
-    private String LOCAL_ADDRESS = "http://localhost:8080/rest/message/device";
+    private String LOCAL_ADDRESS = "http://pawelszczerbicki.pl:8080/armchair/rest/message/device";
     private MessageService messageService;
     private static Socket socket;
     private RequestBuilder request;

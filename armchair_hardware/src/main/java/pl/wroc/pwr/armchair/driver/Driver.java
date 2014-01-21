@@ -52,10 +52,6 @@ public class Driver {
             counterCtrl1.setEnabled(true);
 
             portAmount = instantDiCtrl.getPortCount();
-
-//			enableCounter(0);
-            instantDoCtrl.getPortDirection()[0].setDirection(DioPortDir.Output);
-            instantDoCtrl.getPortDirection()[1].setDirection(DioPortDir.Output);
         } catch (Exception ex) {
             logger.error("Unable to select device!");
             ex.printStackTrace();
@@ -64,7 +60,7 @@ public class Driver {
 
     public void setPortDirection(int p, DioPortDir d) {
         try {
-            instantDiCtrl.getPortDirection()[p].setDirection(d);
+            instantDoCtrl.getPortDirection()[p].setDirection(d);
         } catch (Exception e) {
             logger.warning(String.format(
                     "Unable to set direction '%s' on device '%s' !", d, p));
@@ -135,15 +131,6 @@ public class Driver {
             e.printStackTrace();
         }
     }
-
-//	public void enableCounter(int counterNo) {
-//		try {
-//			counterCtrl0.setChannel(counterNo);
-//			counterCtrl0.setEnabled(true);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
 
     public int getCounterValue(int channel) {
         if (channel == 0) {
