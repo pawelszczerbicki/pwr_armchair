@@ -307,9 +307,8 @@ jQuery(function($){
 
         lastPercentage['top'] = percent;
 
-        $("#slider-top").pathslider(percent, function(slider){
-            slider.update();
-        });
+        $("#slider-top").getpathslider().setSlider(percent)
+        $("#slider-top").getpathslider().update();
 
     }).on('seat.sp', function(e, obj){
 
@@ -330,9 +329,8 @@ jQuery(function($){
 
         lastPercentage['bottom'] = percent;
 
-        $("#slider-bottom").pathslider(percent, function(slider){
-//            slider.update();
-        });
+        $("#slider-bottom").getpathslider().setSlider(percent)
+        $("#slider-bottom").getpathslider().update();
 
     }).on('seat.zg', function(e, obj){
 
@@ -347,9 +345,9 @@ jQuery(function($){
 
         lastPercentage['header-v'] = percent;
 
-        $("#slider-header-v").pathslider(percent, function(slider){
-//            slider.update();
-        });
+        $("#slider-header-v").getpathslider().setSlider(percent);
+//        $("#slider-header-v").getpathslider().update();
+
     }).on('seat.wf', function(e, obj){
 
         var percent = parseInt(obj.data);
