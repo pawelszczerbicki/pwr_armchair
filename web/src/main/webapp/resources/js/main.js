@@ -105,6 +105,17 @@ jQuery(function($){
 
             sendAction("SP", slider.percent);
 
+        },
+        create  : function(e,slider){
+        // set up the tooltip script
+            $.jatt({
+                tooltip: '.pathslider-grip',
+                content: 'data-percent'
+            });
+        },
+        slide   : function(e,slider){
+            // dynamically update the tooltip content
+            $('#tooltip .body').html( parseInt(slider.percent, 10) );
         }
     });
     $("#slider-bottom .pathslider-grip").hover(function(){
@@ -120,6 +131,17 @@ jQuery(function($){
         curve      : { width:1, color:"#d0d0d0", cap:"round" },
         stop     : function(e, slider){
             sendAction("PO", slider.percent);
+        },
+        create  : function(e,slider){
+        // set up the tooltip script
+            $.jatt({
+                tooltip: '.pathslider-grip',
+                content: 'data-percent'
+            });
+        },
+        slide   : function(e,slider){
+            // dynamically update the tooltip content
+            $('#tooltip .body').html( parseInt(slider.percent, 10) );
         }
     });
     $("#slider-top .pathslider-grip").hover(function(){
@@ -135,6 +157,17 @@ jQuery(function($){
         curve      : { width:1, color:"#d0d0d0", cap:"round" },
         stop     : function(e, slider){
             sendAction("PZ", slider.percent);
+        },
+        create  : function(e,slider){
+        // set up the tooltip script
+            $.jatt({
+                tooltip: '.pathslider-grip',
+                content: 'data-percent'
+            });
+        },
+        slide   : function(e,slider){
+            // dynamically update the tooltip content
+            $('#tooltip .body').html( parseInt(slider.percent, 10) );
         }
     });
     $("#slider-header-h .pathslider-grip").hover(function(){
@@ -150,6 +183,17 @@ jQuery(function($){
         curve      : { width:1, color:"#d0d0d0", cap:"round" },
         stop     : function(e, slider){
             sendAction("ZG", slider.percent);
+        },
+        create  : function(e,slider){
+        // set up the tooltip script
+            $.jatt({
+                tooltip: '.pathslider-grip',
+                content: 'data-percent'
+            });
+        },
+        slide   : function(e,slider){
+            // dynamically update the tooltip content
+            $('#tooltip .body').html( parseInt(slider.percent, 10) );
         }
     });
     $("#slider-header-v .pathslider-grip").hover(function(){
@@ -165,6 +209,17 @@ jQuery(function($){
         curve      : { width:1, color:"#d0d0d0", cap:"round" },
         stop     : function(e, slider){
             sendAction("GW", slider.percent);
+        },
+        create  : function(e,slider){
+        // set up the tooltip script
+            $.jatt({
+                tooltip: '.pathslider-grip',
+                content: 'data-percent'
+            });
+        },
+        slide   : function(e,slider){
+            // dynamically update the tooltip content
+            $('#tooltip .body').html( parseInt(slider.percent, 10) );
         }
     });
     $("#slider-middle-h .pathslider-grip").hover(function(){
@@ -180,6 +235,17 @@ jQuery(function($){
         curve      : { width:1, color:"#d0d0d0", cap:"round" },
         stop     : function(e, slider){
             sendAction("GG", slider.percent);
+        },
+        create  : function(e,slider){
+        // set up the tooltip script
+            $.jatt({
+                tooltip: '.pathslider-grip',
+                content: 'data-percent'
+            });
+        },
+        slide   : function(e,slider){
+            // dynamically update the tooltip content
+            $('#tooltip .body').html( parseInt(slider.percent, 10) );
         }
     });
     $("#slider-middle-v .pathslider-grip").hover(function(){
@@ -195,6 +261,17 @@ jQuery(function($){
         curve      : { width:1, color:"#d0d0d0", cap:"round" },
         stop     : function(e, slider){
             sendAction("WF", slider.percent);
+        },
+        create  : function(e,slider){
+        // set up the tooltip script
+            $.jatt({
+                tooltip: '.pathslider-grip',
+                content: 'data-percent'
+            });
+        },
+        slide   : function(e,slider){
+            // dynamically update the tooltip content
+            $('#tooltip .body').html( parseInt(slider.percent, 10) );
         }
     });
     $("#slider-bottom-h .pathslider-grip").hover(function(){
@@ -209,9 +286,18 @@ jQuery(function($){
         range      : 30,
         curve      : { width:1, color:"#d0d0d0", cap:"round" },
         stop     : function(e, slider){
-
             sendAction("PF", slider.percent);
-
+        },
+        create  : function(e,slider){
+        // set up the tooltip script
+            $.jatt({
+                tooltip: '.pathslider-grip',
+                content: 'data-percent'
+            });
+        },
+        slide   : function(e,slider){
+            // dynamically update the tooltip content
+            $('#tooltip .body').html( parseInt(slider.percent, 10) );
         }
     });
     $("#slider-bottom-v-head .pathslider-grip").hover(function(){
@@ -227,6 +313,17 @@ jQuery(function($){
         curve      : { width:1, color:"#d0d0d0", cap:"round" },
         stop     : function(e, slider){
             sendAction("UG", slider.percent);
+        },
+        create  : function(e,slider){
+        // set up the tooltip script
+            $.jatt({
+                tooltip: '.pathslider-grip',
+                content: 'data-percent'
+            });
+        },
+        slide   : function(e,slider){
+            // dynamically update the tooltip content
+            $('#tooltip .body').html( parseInt(slider.percent, 10) );
         }
     });
     $("#slider-bottom-v-tail .pathslider-grip").hover(function(){

@@ -173,6 +173,22 @@ canvas#canvas-seat-control {
     box-shadow: none;
 }
 
+/* basic tooltip style */
+#tooltip {
+    color: #dddddd;
+    background: #444;
+    border: 1px solid #777;
+    padding: 8px;
+    display: none;
+    opacity: 0.9;
+    filter: alpha(opacity=90);
+    text-align: left;
+    border-radius: .5em;
+    -moz-border-radius: .5em;
+    -webkit-border-radius: .5em;
+    z-index: 1000;
+}
+
 /* icons */
 
 @font-face {
