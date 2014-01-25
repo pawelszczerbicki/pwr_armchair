@@ -39,8 +39,7 @@ public class AtmosphereService {
         socket.on(new Function<Message>() {
             @Override
             public void on(Message m) {
-                logger.info("Message: " + m.getType());
-                ;
+                //logger.info("Message: " + m.getType());
                 messageService.service(m);
             }
         }).on(new Function<IOException>() {

@@ -12,6 +12,7 @@ import pl.wroc.pwr.armchair.ws.SettingsParser;
 
 import java.util.*;
 
+import static java.lang.String.format;
 import static pl.wroc.pwr.armchair.element.Direction.BACKWARD;
 import static pl.wroc.pwr.armchair.element.Direction.FORWARD;
 import static pl.wroc.pwr.armchair.ws.MessageType.CALIBRATE;
@@ -22,7 +23,7 @@ import static pl.wroc.pwr.armchair.ws.MessageType.RESPONSE;
  */
 public class ArmchairController {
 
-    private final int READ_COUNTER_DELAY = 5;
+    private final int READ_COUNTER_DELAY = 200;
     private static ArmchairController instance = new ArmchairController();
     private Driver driver = Driver.getInstance();
     private Map<String, Element> elements = new HashMap<>();
@@ -31,7 +32,6 @@ public class ArmchairController {
     private SettingsParser parser = new SettingsParser();
     private final String STOP_MOVING = "STOP_MOVING";
     private final String START_MOVING = "START_MOVING";
-    private int mockCounterValue = 0;
 
     private ArmchairController() {
         setConfiguration(parser.getDefaultElements());
@@ -46,8 +46,10 @@ public class ArmchairController {
         Element e = elements.get(name);
         Integer stepValue = getMoveStep(percentageValue, e);
         System.out.println("Step value: " + stepValue);
+        System.out.println("Percentage: " + percentageValue);
+        System.out.println(e);
         send(RESPONSE, e.getCode(), START_MOVING);
-        if (stepValue.equals(0)) {
+        if (stepValue.equals(0) || e.getCounter() == 0) {
             send(RESPONSE, e.getCode(), e.getCurrentState().toString());
             send(RESPONSE, e.getCode(), STOP_MOVING);
             return;
@@ -55,26 +57,28 @@ public class ArmchairController {
         System.out.println("Current: " + e.getCurrentState());
         System.out.println("So should set: " + e.getCurrentState() + Math.abs(stepValue));
         startMovingAsync(e, stepValue);
-        interruptMoving(e, stepValue, mockCounterValue);
+        interruptMoving(e, stepValue, driver.getCounterValue(e.getCounter()));
     }
 
     private void interruptMoving(Element e, int stepValue, int counter) {
         int oldCounter;
-        int currentCounter = mockCounterValue;
+        int currentCounter = counter;
         int doneSteps;
         int currentStatePercentage = getPercentage(e.getCurrentState(), e.getMaxState());
         do {
-            mockCounterValue++;
-            oldCounter = currentCounter;
-            currentCounter = mockCounterValue;
-            doneSteps = stepValue > 0 ? currentCounter - counter : -(currentCounter - counter);
-            System.out.println(String.format("Done steps: %s, next percentage: %s, current: %s", doneSteps, (e.getCurrentState() + doneSteps) * 100 / e.getMaxState(), currentStatePercentage));
-            currentStatePercentage = sendAndReturnCurrentState(e, doneSteps, currentStatePercentage);
             try {
                 Thread.sleep(READ_COUNTER_DELAY);
             } catch (InterruptedException ex) {
 
             }
+            oldCounter = currentCounter;
+            currentCounter = driver.getCounterValue(e.getCounter());
+            System.out.println(format("counter currend:%s, old: %s", currentCounter, oldCounter));
+//            currentCounter = mockCounterValue;
+            doneSteps = stepValue > 0 ? currentCounter - counter : -(currentCounter - counter);
+            currentStatePercentage = sendAndReturnCurrentState(e, doneSteps, currentStatePercentage);
+            System.out.println(format("Done steps: %s, next percentage: %s, current: %s", doneSteps, (e.getCurrentState() + doneSteps) * 100 / e.getMaxState(), currentStatePercentage));
+
         } while (shouldGoOnMoving(stepValue, oldCounter, currentCounter, doneSteps));
         stopMovingAndSendMessage(e, doneSteps);
     }
@@ -135,8 +139,42 @@ public class ArmchairController {
     public void calibrate() {
         send(CALIBRATE, null, "START");
         for (String s : elements.keySet()) {
-            move(s, 0);
+            moveCalibrate(s, 0);
         }
         send(CALIBRATE, null, "STOP");
+    }
+
+    private void moveCalibrate(String s, int i) {
+        Element e = elements.get(s);
+        send(RESPONSE, e.getCode(), START_MOVING);
+
+        System.out.println("Current: " + e.getCurrentState());
+        startMovingAsync(e, -1);
+        send(RESPONSE, e.getCode(), START_MOVING);
+        try {
+            interruptCalibration(e);
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+        }
+        send(RESPONSE, e.getCode(), "0");
+        e.setCurrentState(0);
+        elements.put(e.getCode(), e);
+        send(RESPONSE, e.getCode(), STOP_MOVING);
+    }
+
+    private void interruptCalibration(Element e) throws InterruptedException {
+        System.out.println(e);
+        int counter = driver.getCounterValue(e.getCounter());
+        int oldCounter;
+        do {
+            if (e.getCounter() == 0)
+                break;
+            oldCounter = counter;
+            Thread.sleep(READ_COUNTER_DELAY);
+            counter = driver.getCounterValue(e.getCounter());
+            System.out.println(format("old counter: %s, current counter: %s", oldCounter, counter));
+
+        } while (oldCounter != counter);
+        driver.setZero(e.getPort());
     }
 }
