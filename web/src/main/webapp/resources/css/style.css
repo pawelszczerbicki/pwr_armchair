@@ -10,6 +10,10 @@ body {
     text-align: center;
 }
 
+.below {
+    margin-top: 450px;
+}
+
 canvas#canvas-seat-control {
     position: absolute;
     top: 50px;

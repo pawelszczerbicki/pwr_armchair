@@ -45,8 +45,11 @@
             </div>
         </div>
     </div>
-    <div class="sidebar-content">
-
+    <div class="row below">
+        <div class="col-md-12">
+            <p>System logs:</p>
+            <textarea id="textarea-log" class="form-control" rows="20" disabled></textarea>
+            <br>
+        </div>
     </div>
-
 </div>

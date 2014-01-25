@@ -112,7 +112,7 @@ jQuery(function($){
     });
 
     $("#slider-top").pathslider({
-        points     : [ 50,100,   50,-75,   -50,-75,  250,100  ],
+        points     : [ 50,75,   50,-75,   -50,-75,  250,75  ],
         value      : 50,
         rotateGrip : true,
         tolerance  : 3,
@@ -534,7 +534,7 @@ $(function () {
                 $.unblockUI();
             }
         } else if (type === "LOG") {
-            //TODO FLOWER show it for user
+            $('#textarea-log').append(msg.data + '\n').scrollTop($('#textarea-log')[0].scrollHeight);
             console.log("logs from device" + msg.data)
         }
     };
