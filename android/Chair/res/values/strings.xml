@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Chair</string>
+    <string name="action_settings">Settings</string>
+    <string name="eject">Headrest height </string>
+    <string name="tilt">Skew</string>
+    <string name="tilt_bottom">Height of the rear part</string>
+    <string name="tilt_front">Height of the front part</string>
+    <string name="lengthen">Extend</string>
+    <string name="move">Move</string>
+    <string name="bulge">Bulging height </string>
+    <string name="lorem">Lorem ipsum</string>
+    <string name="head">Headrest</string>
+    <string name="back">Backrest</string>
+    <string name="all">Whole seat</string>
+    <string name="bottom">Seat</string>
+    <string name="loins">Lumbar</string>
+    <string name="height">Height</string>
+    <string name="calibrate">Calibrate</string>
+    <string name="instrukcja_naglowek">Seat control</string>
+    <string name="instrukcja_tresc">To control batches seat press on the dot on the selected area. </string>
+
+</resources>

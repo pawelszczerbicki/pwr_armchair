@@ -1,0 +1,246 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".ChairActivity" >
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" >
+
+        <RelativeLayout
+            android:id="@+id/fotel"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/fotel" >
+
+            <Button
+                android:id="@+id/ignore_me_spacer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:clickable="false"
+                android:focusable="false"
+                android:text="PF"
+                android:visibility="invisible" />
+
+            <ImageButton
+                android:id="@+id/btn_zaglowek"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="37dp"
+                android:layout_marginTop="15dp"
+                android:layout_toRightOf="@+id/ignore_me_spacer"
+                android:background="@drawable/button_state_selector" />
+
+            <ImageButton
+                android:id="@+id/btn_ledzwie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/btn_zaglowek"
+                android:layout_below="@+id/btn_zaglowek"
+                android:layout_marginLeft="7dp"
+                android:layout_marginTop="54dp"
+                android:background="@drawable/button_state_selector" />
+
+            <ImageButton
+                android:id="@+id/btn_calosc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/ignore_me_spacer"
+                android:layout_toLeftOf="@+id/btn_zaglowek"
+                android:background="@drawable/button_state_selector" />
+
+            <ImageButton
+                android:id="@+id/btn_oparcie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/btn_ledzwie"
+                android:layout_alignRight="@+id/btn_calosc"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="14dp"
+                android:background="@drawable/button_state_selector" />
+
+            <ImageButton
+                android:id="@+id/btn_siedzisko"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/btn_calosc"
+                android:layout_marginBottom="11dp"
+                android:layout_toRightOf="@+id/btn_ledzwie"
+                android:background="@drawable/button_state_selector" />
+
+            <View
+                android:id="@+id/separator"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="20dp"
+                android:background="#C3C3C3" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlSliders"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <ImageView
+                android:id="@+id/minus1"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_alignBottom="@+id/seekBarFS"
+                android:layout_alignParentLeft="true"
+                android:layout_alignTop="@+id/seekBarFS"
+                android:layout_marginLeft="25dp"
+                android:src="@drawable/minus" />
+
+            <SeekBar
+                android:id="@+id/seekBarFS"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/TextViewFS"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@id/minus1" />
+
+            <ImageView
+                android:id="@+id/plus1"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_alignBottom="@+id/seekBarFS"
+                android:layout_alignTop="@+id/seekBarFS"
+                android:layout_marginLeft="12dp"
+                android:layout_toRightOf="@id/seekBarFS"
+                android:src="@drawable/plus" />
+
+            <ImageView
+                android:id="@+id/minus2"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_alignBottom="@+id/seekBarSS"
+                android:layout_alignTop="@+id/seekBarSS"
+                android:layout_marginLeft="25dp"
+                android:layout_toRightOf="@id/minus2"
+                android:src="@drawable/minus" />
+
+            <SeekBar
+                android:id="@+id/seekBarSS"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/seekBarFS"
+                android:layout_below="@+id/TextViewSS"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp" />
+
+            <ImageView
+                android:id="@+id/plus2"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_alignBottom="@+id/seekBarSS"
+                android:layout_alignTop="@+id/seekBarSS"
+                android:layout_marginLeft="12dp"
+                android:layout_toRightOf="@id/seekBarSS"
+                android:src="@drawable/plus" />
+
+            <ImageView
+                android:id="@+id/minus3"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_alignBottom="@+id/seekBarTS"
+                android:layout_alignTop="@+id/seekBarTS"
+                android:layout_marginLeft="25dp"
+                android:src="@drawable/minus" />
+
+            <SeekBar
+                android:id="@+id/seekBarTS"
+                android:layout_width="220dp"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/seekBarFS"
+                android:layout_below="@+id/TextViewTS"
+                android:layout_marginTop="10dp" />
+
+            <ImageView
+                android:id="@+id/plus3"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_alignBottom="@+id/seekBarTS"
+                android:layout_alignTop="@+id/seekBarTS"
+                android:layout_marginLeft="12dp"
+                android:layout_toRightOf="@id/seekBarTS"
+                android:src="@drawable/plus" />
+
+            <TextView
+                android:id="@+id/TextViewTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif"
+                android:text="@string/instrukcja_naglowek"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#585858"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/TextViewFS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/TextViewTitle"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="12dp"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/instrukcja_tresc"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="21sp" />
+
+            <TextView
+                android:id="@+id/TextViewSS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/seekBarFS"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/lorem"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="21sp" />
+
+            <TextView
+                android:id="@+id/TextViewTS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/seekBarSS"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/lorem"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textSize="21sp" />
+
+            <Button
+                android:id="@+id/btnCalibrate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:text="@string/calibrate" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

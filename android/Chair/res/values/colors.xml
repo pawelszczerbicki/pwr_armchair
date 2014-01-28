@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_element">#FFFFFF</color>
+    <color name="bg_white_transparent">#DAFFFFFF</color>
+    <color name="bg_dark">#000000</color>
+    <color name="bg_grey">#ABABAB</color>
+    <color name="bg_dark_grey">#313131</color>
+    <color name="bg_black_transparent">#5A000000</color>
+    <color name="bg_blue_grey">#4b6170</color>
+    <color name="bg_light_blue">#45c4ff</color>
+    
+    <color name="gradient_actionbar_start">#59758b</color>
+    <color name="gradient_actionbar_end">#3d5061</color>        
+    <color name="gradient_actionbarelement_start">#465d6e</color>
+    <color name="gradient_actionbarelement_end">#32414f</color>
+    
+    <color name="border_blue_grey">#7d8992</color>
+    
+    <color name="text_black">#000000</color>
+    <color name="text_white">#FFFFFF</color>
+    
+</resources>
