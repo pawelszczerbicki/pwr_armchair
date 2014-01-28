@@ -7,7 +7,7 @@
     <string name="tilt">Skew</string>
     <string name="tilt_bottom">Height of the rear part</string>
     <string name="tilt_front">Height of the front part</string>
-    <string name="lengthen">Extend</string>
+    <string name="lengthen">Shorten</string>
     <string name="move">Move</string>
     <string name="bulge">Bulging height </string>
     <string name="lorem">Lorem ipsum</string>
