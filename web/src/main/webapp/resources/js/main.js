@@ -359,6 +359,14 @@ jQuery(function($){
         sendCalibrate();
     });
 
+    $('#btn-mock').click(function(){
+        // Paweu send whatever you want on awesome click event
+        // then do this:
+        $('#btn-mock').removeClass('btn-success').addClass('btn-warning').text('Change to real device');
+        // and then again
+        // $('#btn-mock').removeClass('btn-warning').addClass('btn-success').text('Change to mock');
+    });
+
     $(mainContainer).on('seat.pf', function(e, obj){
 
         console.log('pf moved');
