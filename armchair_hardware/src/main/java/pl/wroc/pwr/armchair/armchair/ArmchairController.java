@@ -16,6 +16,7 @@ import static java.lang.String.format;
 import static pl.wroc.pwr.armchair.element.Direction.BACKWARD;
 import static pl.wroc.pwr.armchair.element.Direction.FORWARD;
 import static pl.wroc.pwr.armchair.ws.MessageType.CALIBRATE;
+import static pl.wroc.pwr.armchair.ws.MessageType.CONFIG;
 import static pl.wroc.pwr.armchair.ws.MessageType.RESPONSE;
 
 /**
@@ -24,40 +25,37 @@ import static pl.wroc.pwr.armchair.ws.MessageType.RESPONSE;
 public class ArmchairController {
 
     private final int READ_COUNTER_DELAY = 200;
-    private static ArmchairController instance = new ArmchairController();
-    private Driver driver = Driver.getInstance();
+    private Driver driver;
     private Map<String, Element> elements = new HashMap<>();
-    private AtmosphereSender sender = AtmosphereSender.getInstance();
-    private Logger logger = Logger.getInstance(getClass(), sender);
+    private AtmosphereSender sender;
+    private Logger logger;
     private SettingsParser parser = new SettingsParser();
     private final String STOP_MOVING = "STOP_MOVING";
     private final String START_MOVING = "START_MOVING";
+    private Integer mockCounter = 0;
+    private Integer mockCallibration = 0;
+    private Boolean mocked = false;
 
-    private ArmchairController() {
+    public ArmchairController(AtmosphereSender sender, Boolean mocked) {
+        this.mocked = mocked;
+        this.sender = sender;
+        this.logger = Logger.getInstance(getClass(), sender);
+        this.driver = new Driver(sender);
         setConfiguration(parser.getDefaultElements());
     }
-
-    public static ArmchairController getInstance() {
-        return instance;
-    }
-
 
     public void move(String name, int percentageValue) {
         Element e = elements.get(name);
         Integer stepValue = getMoveStep(percentageValue, e);
-        System.out.println("Step value: " + stepValue);
-        System.out.println("Percentage: " + percentageValue);
-        System.out.println(e);
         send(RESPONSE, e.getCode(), START_MOVING);
-        if (stepValue.equals(0) || e.getCounter() == 0) {
+        //TODO in case of wrong counter1 || e.getCounter() == 0
+        if (stepValue.equals(0)) {
             send(RESPONSE, e.getCode(), e.getCurrentState().toString());
             send(RESPONSE, e.getCode(), STOP_MOVING);
             return;
         }
-        System.out.println("Current: " + e.getCurrentState());
-        System.out.println("So should set: " + e.getCurrentState() + Math.abs(stepValue));
         startMovingAsync(e, stepValue);
-        interruptMoving(e, stepValue, driver.getCounterValue(e.getCounter()));
+        interruptMoving(e, stepValue, getCounterValue(e));
     }
 
     private void interruptMoving(Element e, int stepValue, int counter) {
@@ -69,12 +67,10 @@ public class ArmchairController {
             try {
                 Thread.sleep(READ_COUNTER_DELAY);
             } catch (InterruptedException ex) {
-
+                logger.error("Can not wait for moving, continue");
             }
             oldCounter = currentCounter;
-            currentCounter = driver.getCounterValue(e.getCounter());
-            System.out.println(format("counter currend:%s, old: %s", currentCounter, oldCounter));
-//            currentCounter = mockCounterValue;
+            currentCounter = getCounterValue(e);
             doneSteps = stepValue > 0 ? currentCounter - counter : -(currentCounter - counter);
             currentStatePercentage = sendAndReturnCurrentState(e, doneSteps, currentStatePercentage);
             System.out.println(format("Done steps: %s, next percentage: %s, current: %s", doneSteps, (e.getCurrentState() + doneSteps) * 100 / e.getMaxState(), currentStatePercentage));
@@ -112,7 +108,6 @@ public class ArmchairController {
 
     private void startMovingAsync(Element element, int stepValue) {
         Direction d = stepValue > 0 ? FORWARD : BACKWARD;
-        System.out.println("Direction: " + d);
         driver.sendOneOnSpecificPos(element.getPort(), element.getBit(d));
     }
 
@@ -133,9 +128,6 @@ public class ArmchairController {
         }
     }
 
-    //TODO make calibration based only on counter
-    //TODO add calibration and zeros in other methods,
-    //TODO calibration should get max values, and zeros should set chair to zero
     public void calibrate() {
         send(CALIBRATE, null, "START");
         for (String s : elements.keySet()) {
@@ -147,8 +139,6 @@ public class ArmchairController {
     private void moveCalibrate(String s, int i) {
         Element e = elements.get(s);
         send(RESPONSE, e.getCode(), START_MOVING);
-
-        System.out.println("Current: " + e.getCurrentState());
         startMovingAsync(e, -1);
         send(RESPONSE, e.getCode(), START_MOVING);
         try {
@@ -164,17 +154,38 @@ public class ArmchairController {
 
     private void interruptCalibration(Element e) throws InterruptedException {
         System.out.println(e);
-        int counter = driver.getCounterValue(e.getCounter());
+        int counter = getCounterValue(e);
         int oldCounter;
         do {
-            if (e.getCounter() == 0)
-                break;
             oldCounter = counter;
             Thread.sleep(READ_COUNTER_DELAY);
-            counter = driver.getCounterValue(e.getCounter());
-            System.out.println(format("old counter: %s, current counter: %s", oldCounter, counter));
+            counter = getCounterValue(e);
 
-        } while (oldCounter != counter);
+        } while (keepCalibrating(counter, oldCounter));
         driver.setZero(e.getPort());
+    }
+
+    private boolean keepCalibrating(int counter, int oldCounter) {
+        if (!mocked) return oldCounter != counter;
+        if (mockCallibration >= 10) {
+            mockCallibration = 0;
+            return false;
+        }
+        mockCallibration++;
+        return true;
+    }
+
+    private int getCounterValue(Element e) {
+        System.out.println("mocked : " + mocked);
+        if (!mocked) return driver.getCounterValue(e.getCounter());
+        System.out.println("returning mocked");
+        mockCounter += 15;
+        return mockCounter;
+    }
+
+    public void setMocked(Boolean mocked) {
+        this.mocked = mocked;
+        String message = mocked ? "MOCKED" : "UNMOCKED";
+        sender.send(new Message(CONFIG, message));
     }
 }

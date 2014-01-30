@@ -1,72 +1,71 @@
-
 var mainContainer = '.canvas-container-content';
 
-jQuery(function($){
+jQuery(function ($) {
     var canvas = document.getElementById('canvas-seat-control');
     var context = canvas.getContext('2d');
 
     var lastPercentage = {
-        "middle-v" : 50,
-        "middle-h" : 50,
-        "bottom" : 50,
-        "bottom-h" : 50,
-        "bottom-v-head" : 50,
-        "bottom-v-tail" : 50,
-        "header-h" : 50,
-        "header-v" : 50,
-        "top" : 50
+        "middle-v": 50,
+        "middle-h": 50,
+        "bottom": 50,
+        "bottom-h": 50,
+        "bottom-v-head": 50,
+        "bottom-v-tail": 50,
+        "header-h": 50,
+        "header-v": 50,
+        "top": 50
     };
 
     var seat = {
-        point1 : {
-            start : { x: 400, y: 50 }
+        point1: {
+            start: { x: 400, y: 50 }
         },
-        point2 : {
-            bezierStart : { x: 430, y: 50 },
-            bezierEnd : { x: 430, y: 150 },
-            end : { x: 405, y: 150 }
+        point2: {
+            bezierStart: { x: 430, y: 50 },
+            bezierEnd: { x: 430, y: 150 },
+            end: { x: 405, y: 150 }
         },
-        point3 : {
-            bezierStart : { x: 440, y: 150 },
-            bezierEnd : { x: 430, y: 400 },
-            end : { x: 380, y: 410 }
+        point3: {
+            bezierStart: { x: 440, y: 150 },
+            bezierEnd: { x: 430, y: 400 },
+            end: { x: 380, y: 410 }
         },
-        point4 : {
-            bezierStart : { x: 380, y: 420 },
-            bezierEnd : { x: 100, y: 400 },
-            end : { x: 100, y: 350 }
+        point4: {
+            bezierStart: { x: 380, y: 420 },
+            bezierEnd: { x: 100, y: 400 },
+            end: { x: 100, y: 350 }
         },
-        point5 : {
-            bezierStart : { x: 100, y: 290 },
-            bezierEnd : { x: 340, y: 350 },
-            end : { x: 360, y: 370 }
+        point5: {
+            bezierStart: { x: 100, y: 290 },
+            bezierEnd: { x: 340, y: 350 },
+            end: { x: 360, y: 370 }
         },
-        point6 : {
-            bezierStart : { x: 355, y: 340 },
-            bezierEnd : { x: 355, y: 320 },
-            end : { x: 355, y: 295 }
+        point6: {
+            bezierStart: { x: 355, y: 340 },
+            bezierEnd: { x: 355, y: 320 },
+            end: { x: 355, y: 295 }
         },
-        point7 : {
-            bezierStart : { x: 340, y: 270 },
-            bezierEnd : { x: 345, y: 245 },
-            end : { x: 360, y: 230 }
+        point7: {
+            bezierStart: { x: 340, y: 270 },
+            bezierEnd: { x: 345, y: 245 },
+            end: { x: 360, y: 230 }
         },
-        point8 : {
-            bezierStart : { x: 370, y: 150 },
-            bezierEnd : { x: 395, y: 150 },
-            end : { x: 395, y: 150 }
+        point8: {
+            bezierStart: { x: 370, y: 150 },
+            bezierEnd: { x: 395, y: 150 },
+            end: { x: 395, y: 150 }
         },
-        point9 : {
-            bezierStart : { x: 370, y: 150 },
-            bezierEnd : { x: 370, y: 50 },
-            end : { x: 400, y: 50 }
+        point9: {
+            bezierStart: { x: 370, y: 150 },
+            bezierEnd: { x: 370, y: 50 },
+            end: { x: 400, y: 50 }
         }
     }
 
     var newSeat = JSON.parse(JSON.stringify(seat));
     redrawSeat(seat);
 
-    function redrawSeat(seat){
+    function redrawSeat(seat) {
         var canvas = document.getElementById('canvas-seat-control');
         var context = canvas.getContext('2d');
 
@@ -95,242 +94,242 @@ jQuery(function($){
     }
 
     $("#slider-bottom").pathslider({
-        points     : [ 0,150,   0,0,   0,0,  325,150  ],
-        value      : 50,
-        rotateGrip : true,
-        tolerance  : 3,
-        range      : 30,
-        curve      : { width:1, color:"#d0d0d0", cap:"round" },
-        stop     : function(e, slider){
+        points: [ 0, 150, 0, 0, 0, 0, 325, 150  ],
+        value: 50,
+        rotateGrip: true,
+        tolerance: 3,
+        range: 30,
+        curve: { width: 1, color: "#d0d0d0", cap: "round" },
+        stop: function (e, slider) {
 
             sendAction("SP", slider.percent);
 
         },
-        create  : function(e,slider){
-        // set up the tooltip script
+        create: function (e, slider) {
+            // set up the tooltip script
             $.jatt({
                 tooltip: '.pathslider-grip',
                 content: 'data-percent'
             });
         },
-        slide   : function(e,slider){
+        slide: function (e, slider) {
             // dynamically update the tooltip content
-            $('#tooltip .body').html( parseInt(slider.percent, 10) );
+            $('#tooltip .body').html(parseInt(slider.percent, 10));
         }
     });
-    $("#slider-bottom .pathslider-grip").hover(function(){
+    $("#slider-bottom .pathslider-grip").hover(function () {
         $('#image-container > img').show().attr('src', 'resources/img/bottom.png');
     });
 
     $("#slider-top").pathslider({
-        points     : [ 50,75,   50,-75,   -50,-75,  250,75  ],
-        value      : 50,
-        rotateGrip : true,
-        tolerance  : 3,
-        range      : 30,
-        curve      : { width:1, color:"#d0d0d0", cap:"round" },
-        stop     : function(e, slider){
+        points: [ 50, 75, 50, -75, -50, -75, 250, 75  ],
+        value: 50,
+        rotateGrip: true,
+        tolerance: 3,
+        range: 30,
+        curve: { width: 1, color: "#d0d0d0", cap: "round" },
+        stop: function (e, slider) {
             sendAction("PO", slider.percent);
         },
-        create  : function(e,slider){
-        // set up the tooltip script
+        create: function (e, slider) {
+            // set up the tooltip script
             $.jatt({
                 tooltip: '.pathslider-grip',
                 content: 'data-percent'
             });
         },
-        slide   : function(e,slider){
+        slide: function (e, slider) {
             // dynamically update the tooltip content
-            $('#tooltip .body').html( parseInt(slider.percent, 10) );
+            $('#tooltip .body').html(parseInt(slider.percent, 10));
         }
     });
-    $("#slider-top .pathslider-grip").hover(function(){
+    $("#slider-top .pathslider-grip").hover(function () {
         $('#image-container > img').show().attr('src', 'resources/img/top.png');
     });
 
     $("#slider-header-h").pathslider({
-        points     : [ 75,100,   25,-50,   -25,-50,  200,100  ],
-        value      : 50,
-        rotateGrip : true,
-        tolerance  : 3,
-        range      : 30,
-        curve      : { width:1, color:"#d0d0d0", cap:"round" },
-        stop     : function(e, slider){
+        points: [ 75, 100, 25, -50, -25, -50, 200, 100  ],
+        value: 50,
+        rotateGrip: true,
+        tolerance: 3,
+        range: 30,
+        curve: { width: 1, color: "#d0d0d0", cap: "round" },
+        stop: function (e, slider) {
             sendAction("PZ", slider.percent);
         },
-        create  : function(e,slider){
-        // set up the tooltip script
+        create: function (e, slider) {
+            // set up the tooltip script
             $.jatt({
                 tooltip: '.pathslider-grip',
                 content: 'data-percent'
             });
         },
-        slide   : function(e,slider){
+        slide: function (e, slider) {
             // dynamically update the tooltip content
-            $('#tooltip .body').html( parseInt(slider.percent, 10) );
+            $('#tooltip .body').html(parseInt(slider.percent, 10));
         }
     });
-    $("#slider-header-h .pathslider-grip").hover(function(){
+    $("#slider-header-h .pathslider-grip").hover(function () {
         $('#image-container > img').show().attr('src', 'resources/img/header-h.png');
     });
 
     $("#slider-header-v").pathslider({
-        points     : [ 125,100,   0,0,   0,0,  125,175  ],
-        value      : 50,
-        rotateGrip : true,
-        tolerance  : 3,
-        range      : 30,
-        curve      : { width:1, color:"#d0d0d0", cap:"round" },
-        stop     : function(e, slider){
+        points: [ 125, 100, 0, 0, 0, 0, 125, 175  ],
+        value: 50,
+        rotateGrip: true,
+        tolerance: 3,
+        range: 30,
+        curve: { width: 1, color: "#d0d0d0", cap: "round" },
+        stop: function (e, slider) {
             sendAction("ZG", slider.percent);
         },
-        create  : function(e,slider){
-        // set up the tooltip script
+        create: function (e, slider) {
+            // set up the tooltip script
             $.jatt({
                 tooltip: '.pathslider-grip',
                 content: 'data-percent'
             });
         },
-        slide   : function(e,slider){
+        slide: function (e, slider) {
             // dynamically update the tooltip content
-            $('#tooltip .body').html( parseInt(slider.percent, 10) );
+            $('#tooltip .body').html(parseInt(slider.percent, 10));
         }
     });
-    $("#slider-header-v .pathslider-grip").hover(function(){
+    $("#slider-header-v .pathslider-grip").hover(function () {
         $('#image-container > img').show().attr('src', 'resources/img/header-v.png');
     });
 
     $("#slider-middle-h").pathslider({
-        points     : [ 75,75,   0,0,   0,0,  200,75  ],
-        value      : 50,
-        rotateGrip : true,
-        tolerance  : 3,
-        range      : 30,
-        curve      : { width:1, color:"#d0d0d0", cap:"round" },
-        stop     : function(e, slider){
+        points: [ 75, 75, 0, 0, 0, 0, 200, 75  ],
+        value: 50,
+        rotateGrip: true,
+        tolerance: 3,
+        range: 30,
+        curve: { width: 1, color: "#d0d0d0", cap: "round" },
+        stop: function (e, slider) {
             sendAction("GW", slider.percent);
         },
-        create  : function(e,slider){
-        // set up the tooltip script
+        create: function (e, slider) {
+            // set up the tooltip script
             $.jatt({
                 tooltip: '.pathslider-grip',
                 content: 'data-percent'
             });
         },
-        slide   : function(e,slider){
+        slide: function (e, slider) {
             // dynamically update the tooltip content
-            $('#tooltip .body').html( parseInt(slider.percent, 10) );
+            $('#tooltip .body').html(parseInt(slider.percent, 10));
         }
     });
-    $("#slider-middle-h .pathslider-grip").hover(function(){
+    $("#slider-middle-h .pathslider-grip").hover(function () {
         $('#image-container > img').show().attr('src', 'resources/img/middle-h.png');
     });
 
     $("#slider-middle-v").pathslider({
-        points     : [ 75,100,   0,0,   0,0,  75,175  ],
-        value      : 50,
-        rotateGrip : true,
-        tolerance  : 3,
-        range      : 30,
-        curve      : { width:1, color:"#d0d0d0", cap:"round" },
-        stop     : function(e, slider){
+        points: [ 75, 100, 0, 0, 0, 0, 75, 175  ],
+        value: 50,
+        rotateGrip: true,
+        tolerance: 3,
+        range: 30,
+        curve: { width: 1, color: "#d0d0d0", cap: "round" },
+        stop: function (e, slider) {
             sendAction("GG", slider.percent);
         },
-        create  : function(e,slider){
-        // set up the tooltip script
+        create: function (e, slider) {
+            // set up the tooltip script
             $.jatt({
                 tooltip: '.pathslider-grip',
                 content: 'data-percent'
             });
         },
-        slide   : function(e,slider){
+        slide: function (e, slider) {
             // dynamically update the tooltip content
-            $('#tooltip .body').html( parseInt(slider.percent, 10) );
+            $('#tooltip .body').html(parseInt(slider.percent, 10));
         }
     });
-    $("#slider-middle-v .pathslider-grip").hover(function(){
+    $("#slider-middle-v .pathslider-grip").hover(function () {
         $('#image-container > img').show().attr('src', 'resources/img/middle-v.png');
     });
 
     $("#slider-bottom-h").pathslider({
-        points     : [ 0,100,   0,0,   0,0,  125,100  ],
-        value      : 50,
-        rotateGrip : true,
-        tolerance  : 3,
-        range      : 30,
-        curve      : { width:1, color:"#d0d0d0", cap:"round" },
-        stop     : function(e, slider){
+        points: [ 0, 100, 0, 0, 0, 0, 125, 100  ],
+        value: 50,
+        rotateGrip: true,
+        tolerance: 3,
+        range: 30,
+        curve: { width: 1, color: "#d0d0d0", cap: "round" },
+        stop: function (e, slider) {
             sendAction("WF", slider.percent);
         },
-        create  : function(e,slider){
-        // set up the tooltip script
+        create: function (e, slider) {
+            // set up the tooltip script
             $.jatt({
                 tooltip: '.pathslider-grip',
                 content: 'data-percent'
             });
         },
-        slide   : function(e,slider){
+        slide: function (e, slider) {
             // dynamically update the tooltip content
-            $('#tooltip .body').html( parseInt(slider.percent, 10) );
+            $('#tooltip .body').html(parseInt(slider.percent, 10));
         }
     });
-    $("#slider-bottom-h .pathslider-grip").hover(function(){
+    $("#slider-bottom-h .pathslider-grip").hover(function () {
         $('#image-container > img').show().attr('src', 'resources/img/bottom-h.png');
     });
 
     $("#slider-bottom-v-head").pathslider({
-        points     : [ 150,75,   0,0,   0,0,  150,150  ],
-        value      : 50,
-        rotateGrip : true,
-        tolerance  : 3,
-        range      : 30,
-        curve      : { width:1, color:"#d0d0d0", cap:"round" },
-        stop     : function(e, slider){
+        points: [ 150, 75, 0, 0, 0, 0, 150, 150  ],
+        value: 50,
+        rotateGrip: true,
+        tolerance: 3,
+        range: 30,
+        curve: { width: 1, color: "#d0d0d0", cap: "round" },
+        stop: function (e, slider) {
             sendAction("PF", slider.percent);
         },
-        create  : function(e,slider){
-        // set up the tooltip script
+        create: function (e, slider) {
+            // set up the tooltip script
             $.jatt({
                 tooltip: '.pathslider-grip',
                 content: 'data-percent'
             });
         },
-        slide   : function(e,slider){
+        slide: function (e, slider) {
             // dynamically update the tooltip content
-            $('#tooltip .body').html( parseInt(slider.percent, 10) );
+            $('#tooltip .body').html(parseInt(slider.percent, 10));
         }
     });
-    $("#slider-bottom-v-head .pathslider-grip").hover(function(){
+    $("#slider-bottom-v-head .pathslider-grip").hover(function () {
         $('#image-container > img').show().attr('src', 'resources/img/bottom-v-head.png');
     });
 
     $("#slider-bottom-v-tail").pathslider({
-        points     : [ 100,100,   0,0,   0,0,  100,175  ],
-        value      : 50,
-        rotateGrip : true,
-        tolerance  : 3,
-        range      : 30,
-        curve      : { width:1, color:"#d0d0d0", cap:"round" },
-        stop     : function(e, slider){
+        points: [ 100, 100, 0, 0, 0, 0, 100, 175  ],
+        value: 50,
+        rotateGrip: true,
+        tolerance: 3,
+        range: 30,
+        curve: { width: 1, color: "#d0d0d0", cap: "round" },
+        stop: function (e, slider) {
             sendAction("UG", slider.percent);
         },
-        create  : function(e,slider){
-        // set up the tooltip script
+        create: function (e, slider) {
+            // set up the tooltip script
             $.jatt({
                 tooltip: '.pathslider-grip',
                 content: 'data-percent'
             });
         },
-        slide   : function(e,slider){
+        slide: function (e, slider) {
             // dynamically update the tooltip content
-            $('#tooltip .body').html( parseInt(slider.percent, 10) );
+            $('#tooltip .body').html(parseInt(slider.percent, 10));
         }
     });
-    $("#slider-bottom-v-tail .pathslider-grip").hover(function(){
+    $("#slider-bottom-v-tail .pathslider-grip").hover(function () {
         $('#image-container > img').show().attr('src', 'resources/img/bottom-v-tail.png');
     });
 
-    $('#btn-head').click(function(){
+    $('#btn-head').click(function () {
         $('#slider-header-h').toggleVisibility();
         $('#slider-header-v').toggleVisibility();
         var sign = $(this).find('i').hasClass('glyphicon-plus') ? 'glyphicon-minus' : 'glyphicon-plus';
@@ -338,7 +337,7 @@ jQuery(function($){
         $(this).find('i').removeClass(signToRemove).addClass(sign);
     });
 
-    $('#btn-middle').click(function(){
+    $('#btn-middle').click(function () {
         $('#slider-middle-h').toggleVisibility();
         $('#slider-middle-v').toggleVisibility();
         var sign = $(this).find('i').hasClass('glyphicon-plus') ? 'glyphicon-minus' : 'glyphicon-plus';
@@ -346,7 +345,7 @@ jQuery(function($){
         $(this).find('i').removeClass(signToRemove).addClass(sign);
     });
 
-    $('#btn-bottom').click(function(){
+    $('#btn-bottom').click(function () {
         $('#slider-bottom-h').toggleVisibility();
         $('#slider-bottom-v-tail').toggleVisibility();
         $('#slider-bottom-v-head').toggleVisibility();
@@ -355,25 +354,23 @@ jQuery(function($){
         $(this).find('i').removeClass(signToRemove).addClass(sign);
     });
 
-    $('#btn-calibrate').click(function(){
+    $('#btn-calibrate').click(function () {
         sendCalibrate();
     });
 
-    $('#btn-mock').click(function(){
-        // Paweu send whatever you want on awesome click event
-        // then do this:
-        $('#btn-mock').removeClass('btn-success').addClass('btn-warning').text('Change to real device');
-        // and then again
-        // $('#btn-mock').removeClass('btn-warning').addClass('btn-success').text('Change to mock');
+    $('#btn-mock').click(function () {
+        if ($("btn-mock").className.match(/\btn-success\b/))
+            sendMock(true);
+        else sendMock(false);
     });
 
-    $(mainContainer).on('seat.pf', function(e, obj){
+    $(mainContainer).on('seat.pf',function (e, obj) {
 
         console.log('pf moved');
 
         var percent = parseInt(obj.data);
 
-        var difference = (lastPercentage['bottom-v-head'] - percent)/4;
+        var difference = (lastPercentage['bottom-v-head'] - percent) / 4;
 
         newSeat.point4.end.y -= difference;
         newSeat.point4.bezierEnd.y -= difference;
@@ -382,27 +379,27 @@ jQuery(function($){
 
         lastPercentage['bottom-v-head'] = percent;
 
-        $("#slider-bottom-v-head").pathslider(percent, function(slider){
+        $("#slider-bottom-v-head").pathslider(percent, function (slider) {
 //            slider.update();
         });
 
-    }).on('seat.po', function(e, obj){
+    }).on('seat.po',function (e, obj) {
 
         console.log('po moved');
         var percent = parseInt(obj.data);
-        var difference = (lastPercentage['top'] - percent)/4;
+        var difference = (lastPercentage['top'] - percent) / 4;
 
         newSeat.point1.start.x -= difference;
         newSeat.point2.bezierStart.x -= difference;
         newSeat.point2.bezierEnd.x -= difference;
         newSeat.point2.end.x -= difference;
         newSeat.point3.bezierStart.x -= difference;
-        newSeat.point6.bezierEnd.x -= difference/2;
-        newSeat.point6.end.x -= difference/2;
-        newSeat.point7.bezierStart.x -= difference/2;
-        newSeat.point7.bezierEnd.x -= difference/2;
-        newSeat.point7.end.x -= difference/2;
-        newSeat.point8.bezierStart.x -= difference/2;
+        newSeat.point6.bezierEnd.x -= difference / 2;
+        newSeat.point6.end.x -= difference / 2;
+        newSeat.point7.bezierStart.x -= difference / 2;
+        newSeat.point7.bezierEnd.x -= difference / 2;
+        newSeat.point7.end.x -= difference / 2;
+        newSeat.point8.bezierStart.x -= difference / 2;
         newSeat.point8.bezierEnd.x -= difference;
         newSeat.point8.end.x -= difference;
         newSeat.point9.end.x -= difference;
@@ -415,11 +412,11 @@ jQuery(function($){
         $("#slider-top").getpathslider().setSlider(percent)
         $("#slider-top").getpathslider().update();
 
-    }).on('seat.sp', function(e, obj){
+    }).on('seat.sp',function (e, obj) {
 
         var percent = parseInt(obj.data);
 
-        var difference = (lastPercentage['bottom'] - percent)/4;
+        var difference = (lastPercentage['bottom'] - percent) / 4;
 
         for (var point in newSeat) {
             for (var desc in newSeat[point]) {
@@ -437,10 +434,10 @@ jQuery(function($){
         $("#slider-bottom").getpathslider().setSlider(percent)
         $("#slider-bottom").getpathslider().update();
 
-    }).on('seat.zg', function(e, obj){
+    }).on('seat.zg',function (e, obj) {
 
         var percent = parseInt(obj.data);
-        var difference = (lastPercentage['header-v'] - percent)/4;
+        var difference = (lastPercentage['header-v'] - percent) / 4;
 
         newSeat.point1.start.y -= difference;
         newSeat.point9.end.y -= difference;
@@ -453,10 +450,10 @@ jQuery(function($){
         $("#slider-header-v").getpathslider().setSlider(percent);
 //        $("#slider-header-v").getpathslider().update();
 
-    }).on('seat.wf', function(e, obj){
+    }).on('seat.wf',function (e, obj) {
 
         var percent = parseInt(obj.data);
-        var difference = (lastPercentage['bottom-h'] - percent)/4;
+        var difference = (lastPercentage['bottom-h'] - percent) / 4;
 
         newSeat.point4.end.x -= difference;
         newSeat.point4.bezierEnd.x -= difference;
@@ -465,13 +462,13 @@ jQuery(function($){
 
         lastPercentage['bottom-h'] = percent;
 
-        $("#slider-bottom-h").pathslider(percent, function(slider){
+        $("#slider-bottom-h").pathslider(percent, function (slider) {
 //            slider.update();
         });
-    }).on('seat.gg', function(e, obj){
+    }).on('seat.gg',function (e, obj) {
 
         var percent = parseInt(obj.data);
-        var difference = (lastPercentage['middle-v'] - percent)/4;
+        var difference = (lastPercentage['middle-v'] - percent) / 4;
 
         newSeat.point6.end.y -= difference;
         newSeat.point6.bezierEnd.y -= difference;
@@ -482,13 +479,13 @@ jQuery(function($){
 
         lastPercentage['middle-v'] = percent;
 
-        $("#slider-middle-v").pathslider(percent, function(slider){
+        $("#slider-middle-v").pathslider(percent, function (slider) {
 //            slider.update();
         });
-    }).on('seat.ug', function(e, obj){
+    }).on('seat.ug',function (e, obj) {
 
         var percent = parseInt(obj.data);
-        var difference = (lastPercentage['bottom-v-tail'] - percent)/4;
+        var difference = (lastPercentage['bottom-v-tail'] - percent) / 4;
 
         newSeat.point3.end.y -= difference;
         newSeat.point3.bezierEnd.y -= difference;
@@ -500,13 +497,13 @@ jQuery(function($){
 
         lastPercentage['bottom-v-tail'] = percent;
 
-        $("#slider-bottom-v-tail").pathslider(percent, function(slider){
+        $("#slider-bottom-v-tail").pathslider(percent, function (slider) {
 //            slider.update();
         });
-    }).on('seat.gw', function(e, obj){
+    }).on('seat.gw',function (e, obj) {
 
         var percent = parseInt(obj.data);
-        var difference = (lastPercentage['middle-h'] - percent)/4;
+        var difference = (lastPercentage['middle-h'] - percent) / 4;
 
         newSeat.point7.bezierStart.x -= difference;
         newSeat.point7.bezierEnd.x -= difference;
@@ -514,13 +511,13 @@ jQuery(function($){
 
         lastPercentage['middle-h'] = percent;
 
-        $("#slider-middle-h").pathslider(percent, function(slider){
+        $("#slider-middle-h").pathslider(percent, function (slider) {
 //            slider.update();
         });
-    }).on('seat.pz', function(e, obj){
+    }).on('seat.pz', function (e, obj) {
 
         var percent = parseInt(obj.data);
-        var difference = (lastPercentage['header-h'] - percent)/4;
+        var difference = (lastPercentage['header-h'] - percent) / 4;
 
         newSeat.point1.start.x -= difference;
         newSeat.point9.end.x -= difference;
@@ -530,7 +527,7 @@ jQuery(function($){
 
         lastPercentage['header-h'] = percent;
 
-        $("#slider-header-h").pathslider(percent, function(slider){
+        $("#slider-header-h").pathslider(percent, function (slider) {
 //            slider.update();
         });
     });
@@ -542,7 +539,7 @@ jQuery(function($){
 var subSocket;
 
 $(function () {
-    var localhost_url = 'http://pawelszczerbicki.pl:8080/armchair/rest/message/device';
+    var localhost_url = $("body").attr("ws-url");
     var content = $('#content');
     var input = $('#input');
     var status = $('#status');
@@ -576,46 +573,46 @@ $(function () {
         var type = msg.type;
 
         if (type === "HEARTBEAT") {
-             //TODO FLOWER - do nothing, or show somethink on diode
+            //TODO FLOWER - do nothing, or show somethink on diode
             onHeartbeat();
         } else if (type === "RESPONSE") {
 
-            if(msg.data === 'START_MOVING') {
+            if (msg.data === 'START_MOVING') {
                 blockUI();
             }
-            else if(msg.data === 'STOP_MOVING') {
-                if(!calibrating)
+            else if (msg.data === 'STOP_MOVING') {
+                if (!calibrating)
                     $.unblockUI();
             }
             else {
 
                 switch (msg.code) {
                     case "PF":
-                        $(mainContainer).trigger('seat.pf', { data : msg.data });
+                        $(mainContainer).trigger('seat.pf', { data: msg.data });
                         break;
                     case "PO":
-                        $(mainContainer).trigger('seat.po', { data : msg.data });
+                        $(mainContainer).trigger('seat.po', { data: msg.data });
                         break;
                     case "SP":
-                        $(mainContainer).trigger('seat.sp', { data : msg.data });
+                        $(mainContainer).trigger('seat.sp', { data: msg.data });
                         break;
                     case "ZG":
-                        $(mainContainer).trigger('seat.zg', { data : msg.data });
+                        $(mainContainer).trigger('seat.zg', { data: msg.data });
                         break;
                     case "WF":
-                        $(mainContainer).trigger('seat.wf', { data : msg.data });
+                        $(mainContainer).trigger('seat.wf', { data: msg.data });
                         break;
                     case "GG":
-                        $(mainContainer).trigger('seat.gg', { data : msg.data });
+                        $(mainContainer).trigger('seat.gg', { data: msg.data });
                         break;
                     case "UG":
-                        $(mainContainer).trigger('seat.ug', { data : msg.data });
+                        $(mainContainer).trigger('seat.ug', { data: msg.data });
                         break;
                     case "GW":
-                        $(mainContainer).trigger('seat.gw', { data : msg.data });
+                        $(mainContainer).trigger('seat.gw', { data: msg.data });
                         break;
                     case "PZ":
-                        $(mainContainer).trigger('seat.pz', { data : msg.data });
+                        $(mainContainer).trigger('seat.pz', { data: msg.data });
                         break;
 
                 }
@@ -627,13 +624,13 @@ $(function () {
             //TODO FLOWER serice it!
             console.log("it is state of element" + msg.data);
             console.log("it is chair element" + msg.code);
-        } else if(type === "CALIBRATE") {
-            if(msg.data === "START") {
+        } else if (type === "CALIBRATE") {
+            if (msg.data === "START") {
                 console.log("calibrating started");
                 calibrating = true;
                 //blockUI();
             }
-            else if(msg.data === "STOP") {
+            else if (msg.data === "STOP") {
                 console.log("calibrating finished");
                 calibrating = false;
                 $.unblockUI();
@@ -641,6 +638,11 @@ $(function () {
         } else if (type === "LOG") {
             $('#textarea-log').append(msg.data + '\n').scrollTop($('#textarea-log')[0].scrollHeight);
             console.log("logs from device" + msg.data)
+        } else if (type === "CONFIG") {
+            if (msg.data === "MOCKED")
+                $('#btn-mock').removeClass('btn-success').addClass('btn-warning').text('Change to real device');
+            else if (msg.data === "UNMOCKED")
+                $('#btn-mock').removeClass('btn-warning').addClass('btn-success').text('Change to mock');
         }
     };
 
@@ -681,7 +683,11 @@ function sendCalibrate() {
     subSocket.push(jQuery.stringifyJSON({type: 'CALIBRATE'}));
 }
 
-function blockUI(){
+function sendMock(enabled) {
+    subSocket.push(jQuery.stringifyJSON({type: 'CONFIG', data: enabled}));
+}
+
+function blockUI() {
     $.blockUI({
         message: 'Seat is moving...',
         css: {
@@ -693,16 +699,16 @@ function blockUI(){
             opacity: .5,
             color: '#fff'
         },
-        overlayCSS:  {
+        overlayCSS: {
             backgroundColor: '#666',
-            opacity:         0.1,
-            cursor:          'wait'
+            opacity: 0.1,
+            cursor: 'wait'
         }
     });
 }
 
-jQuery.fn.toggleVisibility = function() {
-    if ($(this).css('visibility') == 'hidden'){
+jQuery.fn.toggleVisibility = function () {
+    if ($(this).css('visibility') == 'hidden') {
         $(this).css('visibility', 'visible');
     } else {
         $(this).css('visibility', 'hidden');

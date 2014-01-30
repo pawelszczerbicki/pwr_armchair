@@ -10,23 +10,17 @@ import java.io.IOException;
  */
 public class AtmosphereSender {
     private final Logger logger = Logger.getLogger(getClass());
-    private static AtmosphereSender instance = new AtmosphereSender();
     private Socket socket;
 
-    public static AtmosphereSender getInstance() {
-        return instance;
-    }
-
-    private AtmosphereSender() {
-    }
-
-    public void setSocket(Socket s) {
-        this.socket = s;
+    public AtmosphereSender(Socket socket) {
+        this.socket = socket;
     }
 
     public void send(Message m) {
-        if (socket == null)
-            throw new IllegalStateException("No socket provided");
+        if (socket == null) {
+            logger.info("Socket not set!");
+            return;
+        }
         try {
             socket.fire(m);
         } catch (IOException e) {
