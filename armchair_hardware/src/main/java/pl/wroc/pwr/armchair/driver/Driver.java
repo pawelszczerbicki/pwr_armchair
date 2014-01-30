@@ -133,8 +133,9 @@ public class Driver {
 
     public int getCounterValue(int channel) {
         if (channel == 0) {
+            System.out.println("returning" + counterCtrl0.getValue());
             return counterCtrl0.getValue();
-        } else if (channel == 1) {
+        } else if (channel == 1) { System.out.println("returning" + counterCtrl1.getValue());
             return counterCtrl1.getValue();
         }
         return 0;

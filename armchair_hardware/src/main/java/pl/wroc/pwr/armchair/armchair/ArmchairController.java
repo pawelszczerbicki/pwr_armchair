@@ -40,6 +40,12 @@ public class ArmchairController {
         this.mocked = mocked;
         this.sender = sender;
         this.logger = Logger.getInstance(getClass(), sender);
+        if (!this.mocked) {
+            prepareDriver();
+        }
+    }
+
+    private void prepareDriver() {
         this.driver = new Driver(sender);
         setConfiguration(parser.getDefaultElements());
     }
@@ -95,7 +101,8 @@ public class ArmchairController {
     }
 
     private void stopMovingAndSendMessage(Element e, Integer doneSteps) {
-        driver.setZero(e.getPort());
+        if (!mocked)
+            driver.setZero(e.getPort());
         e.setCurrentState(e.getCurrentState() + doneSteps);
         send(RESPONSE, e.getCode(), String.valueOf(new Double((double) e.getCurrentState() / e.getMaxState() * 100).intValue()));
         send(RESPONSE, e.getCode(), STOP_MOVING);
@@ -108,7 +115,8 @@ public class ArmchairController {
 
     private void startMovingAsync(Element element, int stepValue) {
         Direction d = stepValue > 0 ? FORWARD : BACKWARD;
-        driver.sendOneOnSpecificPos(element.getPort(), element.getBit(d));
+        if (!mocked)
+            driver.sendOneOnSpecificPos(element.getPort(), element.getBit(d));
     }
 
     private void send(MessageType type, String code, String data) {
@@ -162,7 +170,8 @@ public class ArmchairController {
             counter = getCounterValue(e);
 
         } while (keepCalibrating(counter, oldCounter));
-        driver.setZero(e.getPort());
+        if (!mocked)
+            driver.setZero(e.getPort());
     }
 
     private boolean keepCalibrating(int counter, int oldCounter) {
@@ -185,6 +194,8 @@ public class ArmchairController {
 
     public void setMocked(Boolean mocked) {
         this.mocked = mocked;
+        if (mocked) driver = null;
+        else prepareDriver();
         String message = mocked ? "MOCKED" : "UNMOCKED";
         sender.send(new Message(CONFIG, message));
     }
