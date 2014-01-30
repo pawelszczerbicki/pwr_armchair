@@ -359,9 +359,7 @@ jQuery(function ($) {
     });
 
     $('#btn-mock').click(function () {
-        if ($("btn-mock").className.match(/\btn-success\b/))
-            sendMock(true);
-        else sendMock(false);
+        $(this).hasClass('btn-success') ? sendMock(true) : sendMock(false);
     });
 
     $(mainContainer).on('seat.pf',function (e, obj) {
