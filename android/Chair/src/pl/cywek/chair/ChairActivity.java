@@ -1,13 +1,20 @@
 package pl.cywek.chair;
 
+import pl.cywek.ws.AtmosphereSender;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -51,6 +58,16 @@ public class ChairActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_chair);
+
+		SharedPreferences prefs = getPreferences(MODE_PRIVATE); 
+		String restoredText = prefs.getString("host", null);
+		if (restoredText == null) 
+		{
+			SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+			editor.putString("host", "http://pawelszczerbicki.pl:8080/armchair/rest/message/device");
+			editor.commit();
+		}
+		
 
 		mSeat = (RelativeLayout) findViewById(R.id.fotel);
 		mFirstSeekBar = (SeekBar) findViewById(R.id.seekBarFS);
@@ -154,7 +171,6 @@ public class ChairActivity extends Activity {
 
 	}
 
-	
 	public void updateValues() {
 		switch (mSeatElement) {
 		case OPARCIE:
@@ -185,18 +201,16 @@ public class ChairActivity extends Activity {
 	ProgressDialog dialog;
 
 	public void dialogStart(final String title, final String desc) {
-runOnUiThread(new Runnable() {
-	
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		dialog = ProgressDialog.show(ChairActivity.this,
-				title,
-				desc, true);	
-	}
-});
+		runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				dialog = ProgressDialog.show(ChairActivity.this, title, desc,
+						true);
+			}
+		});
 		Log.d("chair", "Dialog start");
-	
 
 	}
 
@@ -204,11 +218,11 @@ runOnUiThread(new Runnable() {
 		Log.d("chair", "Dialog stop");
 
 		runOnUiThread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				dialog.dismiss();	
+				dialog.dismiss();
 			}
 		});
 
@@ -232,6 +246,57 @@ runOnUiThread(new Runnable() {
 		getMenuInflater().inflate(R.menu.chair, menu);
 
 		return true;
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		Log.d("chair", "" + item.getItemId());
+
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+
+			SharedPreferences prefs = getPreferences(MODE_PRIVATE); 
+	    	String restoredText = prefs.getString("host", "aaaa");
+	    	
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle("Set host address");
+
+			// Set up the input
+			final EditText input = new EditText(this);
+			input.setText(restoredText);
+			// Specify the type of input expected; this, for example, sets the
+			// input as a password, and will mask the text
+			input.setInputType(InputType.TYPE_CLASS_TEXT);
+			builder.setView(input);
+
+			// Set up the buttons
+			builder.setPositiveButton("Set",
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							SharedPreferences.Editor editor = getPreferences(MODE_PRIVATE).edit();
+							editor.putString("host", input.getText().toString());
+							editor.commit();
+							
+							// TODO set up new connection
+							AtmosphereSender.getInstance().closeSocket();
+							new AtmosphereInitTask(ChairActivity.this).execute();
+							
+
+						}
+					});
+			builder.setNegativeButton("Cancel",
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.cancel();
+						}
+					});
+
+			builder.show();
+
+			return true;
+		}
+		return false;
 	}
 
 	public void activateBolster() {
@@ -359,7 +424,6 @@ runOnUiThread(new Runnable() {
 		mSecondSeekBar.setProgress(mChair.getmModel().getmUG());
 		mThirdSeekBar.setProgress(mChair.getmModel().getmPF());
 
-		
 		sectionFirst(View.VISIBLE);
 		sectionSec(View.VISIBLE);
 		sectionThird(View.VISIBLE);
@@ -377,7 +441,6 @@ runOnUiThread(new Runnable() {
 		mTxtTitle.setText(this.getString(R.string.loins));
 		mTxtFirstSlider.setText(this.getString(R.string.bulge));
 		mTxtSecondSlider.setText(this.getString(R.string.height));
-		
 
 		mFirstSeekBar.setProgress(mChair.getmModel().getmGW());
 		mSecondSeekBar.setProgress(mChair.getmModel().getmGG());
@@ -429,7 +492,6 @@ runOnUiThread(new Runnable() {
 		mTxtTitle.setText(this.getString(R.string.all));
 		mSeat.setBackgroundResource(R.drawable.calosc);
 		mSeatElement = SeatElement.CALOSC;
-		
 
 		mFirstSeekBar.setProgress(mChair.getmModel().getmSP());
 
@@ -466,7 +528,7 @@ runOnUiThread(new Runnable() {
 
 		mTxtTitle.setText(this.getString(R.string.back));
 		mTxtFirstSlider.setText(this.getString(R.string.tilt));
-		
+
 		mFirstSeekBar.setProgress(mChair.getmModel().getmPO());
 
 		mFirstSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {

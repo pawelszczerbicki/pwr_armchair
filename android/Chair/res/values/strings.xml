@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Chair</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Set host address</string>
     <string name="eject">Headrest height </string>
     <string name="tilt">Skew</string>
     <string name="tilt_bottom">Height of the rear part</string>

@@ -1,5 +1,6 @@
 package pl.cywek.ws;
 
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -9,13 +10,6 @@ import pl.cywek.chair.ChairActivity;
 
 import java.io.IOException;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Pawel
- * Date: 10.10.13
- * Time: 22:15
- * To change this template use File | Settings | File Templates.
- */
 public class AtmosphereService {
     private String LOCAL_ADDRESS = "http://pawelszczerbicki.pl:8080/armchair/rest/message/device";
     private MessageService messageService;
@@ -43,7 +37,6 @@ public class AtmosphereService {
         socket.on(new Function<Message>() {
             @Override
             public void on(Message m) {
-            //	Log.d("chair", "Message: " + m.getType() + " " + m.getCode() + " " + m.getData());
                 messageService.service(m);
             }
         }).on(new Function<IOException>() {
@@ -56,9 +49,11 @@ public class AtmosphereService {
     }
 
     private RequestBuilder getTransport(final Gson gson, Client client) {
-        return client.newRequestBuilder()
+    	SharedPreferences prefs = mChairActivity.getPreferences(mChairActivity.MODE_PRIVATE); 
+    	String restoredText = prefs.getString("host", "localhost");
+    	return client.newRequestBuilder()
                 .method(Request.METHOD.GET)
-                .uri(LOCAL_ADDRESS)
+                .uri(restoredText) //"http://pawelszczerbicki.pl:8080/armchair/rest/message/device")
                 .header("Content-Type", "application/json")
                 .encoder(new Encoder<Message, String>() {
                     @Override
@@ -71,7 +66,7 @@ public class AtmosphereService {
                     public Message decode(Event e, String s) {
                     	Log.d("chair", "Atmosphereervice " + s);
                     	// Fix dla Pawla super serwera
-                    	if (s.equals("OPEN")) {
+                    	if (s.equals("OPEN") || s.equals("CLOSE")) {
                     		return null;
                     	}
                         return gson.fromJson(s.split("\\|")[1], Message.class);

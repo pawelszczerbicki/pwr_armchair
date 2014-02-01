@@ -29,5 +29,11 @@ public class AtmosphereSender {
         } catch (IOException e) {
         	Log.d("chair", "Error sending message");
         }
+        
     }
+    
+    public void closeSocket() {
+    	socket.close();
+    }
+    
 }
