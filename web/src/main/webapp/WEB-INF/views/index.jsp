@@ -4,6 +4,7 @@
         <div class="col-md-3">
             <div class="sidebar-content">
                 <div id="btn-calibrate" class="btn btn-primary btn-block">Calibrate</div>
+                <div id="btn-mock" class="btn btn-success btn-block">Change to mock</div>
             </div>
         </div>
         <div class="col-md-9">

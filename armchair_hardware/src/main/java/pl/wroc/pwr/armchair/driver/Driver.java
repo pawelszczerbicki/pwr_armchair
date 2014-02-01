@@ -2,6 +2,7 @@ package pl.wroc.pwr.armchair.driver;
 
 import Automation.BDaq.*;
 import pl.wroc.pwr.armchair.logger.Logger;
+import pl.wroc.pwr.armchair.ws.AtmosphereSender;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +13,8 @@ import static pl.wroc.pwr.armchair.driver.DriverUtils.hasError;
  * Created by Pawel on 02.01.14.
  */
 public class Driver {
-
-    private static final Driver d = new Driver();
     private Integer portAmount = 0;
-    private Logger logger = Logger.getInstance(getClass());
+    private Logger logger;
     private InstantDiCtrl instantDiCtrl = new InstantDiCtrl();
     private InstantDoCtrl instantDoCtrl = new InstantDoCtrl();
     private TimerPulseCtrl timerPulseCtrl = new TimerPulseCtrl();
@@ -23,13 +22,11 @@ public class Driver {
     private EventCounterCtrl counterCtrl1 = new EventCounterCtrl();
     private ArrayList<DeviceTreeNode> installedDevices;
 
-    private Driver() {
+    public Driver(AtmosphereSender sender) {
+        this.logger = Logger.getInstance(getClass(), sender);
         installedDevices = instantDiCtrl.getSupportedDevices();
         selectDevice(0);
-    }
-
-    public static Driver getInstance() {
-        return d;
+        logger.info("Starting driver");
     }
 
     public List<DeviceTreeNode> getConnectedDevices() {
@@ -52,6 +49,7 @@ public class Driver {
             counterCtrl1.setEnabled(true);
 
             portAmount = instantDiCtrl.getPortCount();
+            logger.info(String.format("Device [%s] connected properly", installedDevices.get(d).Description));
         } catch (Exception ex) {
             logger.error("Unable to select device!");
             ex.printStackTrace();
@@ -66,6 +64,7 @@ public class Driver {
                     "Unable to set direction '%s' on device '%s' !", d, p));
             e.printStackTrace();
         }
+        logger.info(String.format("Direction %s is set to port %s", d, p));
     }
 
     public Integer getPortAmount() {
@@ -81,7 +80,7 @@ public class Driver {
 
     public void writeData(byte d, Integer p) {
         if (hasError(instantDoCtrl.Write(p, d)))
-            logger.warning("Some error occurred during writing data");
+            logger.warning("Some error occurred during writing data, device may not be connected");
     }
 
     public void writeData(byte[] d, Integer start) {
@@ -134,8 +133,9 @@ public class Driver {
 
     public int getCounterValue(int channel) {
         if (channel == 0) {
+            System.out.println("returning" + counterCtrl0.getValue());
             return counterCtrl0.getValue();
-        } else if (channel == 1) {
+        } else if (channel == 1) { System.out.println("returning" + counterCtrl1.getValue());
             return counterCtrl1.getValue();
         }
         return 0;
